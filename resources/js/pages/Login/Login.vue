@@ -13,7 +13,7 @@ defineOptions({
 <template>
 <div class="min-h-[50vh] flex flex-col justify-center">
     <h2 class="text-2xl font-bold mb-6">Acessar conta</h2>
-    <form class="space-y-4">
+    <form class="space-y-4" action="login.php" method="POST">
       <div >
         <Label class="mb-2" for="email">E-mail</Label>
         <Input id="email" type="email" placeholder="seu@email.com" />

@@ -32,7 +32,7 @@ function onPhoneInput(e: Event) {
 <template>
   <div>
     <h2 class="text-2xl font-bold mb-6">Criar conta</h2>
-    <form class="space-y-4">
+      <form class="space-y-4" action="register.php" method="POST">
       <div class="grid grid-cols-2 gap-4">
         <div>
           <Label class="mb-2" for="tratamento">Tratamento</Label>
