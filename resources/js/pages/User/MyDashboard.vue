@@ -1,5 +1,5 @@
 <script setup>
-import UserLayout from '@Layouts/UserLayout.vue'
+import UserLayout from '@/Layouts/UserLayout.vue'
 
 defineOptions({
   layout: UserLayout

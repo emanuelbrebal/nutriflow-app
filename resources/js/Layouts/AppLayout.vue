@@ -1,4 +1,18 @@
+<script setup lang="ts">
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Icon } from '@iconify/vue';
+import { useColorMode } from '@vueuse/core';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+
+import FlashMessages from '@/Layouts/Components/FlashMessages.vue';
+
+const mode = useColorMode();
+</script>
+
 <template>
+  <FlashMessages />
+
   <div class="min-h-screen flex ">
     <aside
       class="w-64 bg-white border-r-4 border-[#5AD598] text-black p-[24px] pdl-4 flex flex-col justify-content-evenly">
@@ -14,17 +28,16 @@
           </div>
           <div id="hello-user">
             <span>
-              Olá, Nutricionista
+              <slot name="user-greeting">
+                Olá, Usuário
+              </slot>
             </span>
           </div>
-
         </div>
       </section>
 
       <nav id="navigation" class="flex-1 space-y-4 m-4">
-        <a href="#" class="block hover:text-gray-200">Meu Painel</a>
-        <a href="#" class="block hover:text-gray-200">Gerenciar Cardápios</a>
-        <a href="#" class="block hover:text-gray-200">Análises</a>
+        <slot name="navigation-links" />
       </nav>
 
       <hr>
@@ -52,11 +65,9 @@
                   <Icon icon="radix-icons:sun"
                     class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                 </span>
-
                 <span>Alterar tema</span>
               </Button>
             </DropdownMenuTrigger>
-
             <DropdownMenuContent align="end">
               <DropdownMenuItem @click="mode = 'light'">
                 Modo claro
@@ -69,14 +80,12 @@
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
         </div>
 
         <div id="profile" class="m-4">
           <a href="#" class="block hover:text-gray-200">Meu Perfil</a>
           <a href="#" class="block hover:text-gray-200">Encerrar sessão</a>
         </div>
-
       </section>
     </aside>
 
@@ -91,13 +100,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Icon } from '@iconify/vue';
-import { useColorMode } from '@vueuse/core';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-
-const mode = useColorMode();
-</script>

@@ -16,6 +16,8 @@ Route::get('/', function () {
 Route::controller(LoginController::class)->group(function (){
     Route::get('/sign-in', 'redirectLogin')->name('redirectLogin');
     Route::get('/sign-up', 'redirectRegister')->name('redirectRegister');
+    Route::post('/login-post', 'login')->name('login');
+    Route::post('/register-post', 'register')->name('register');
 
 });
 
