@@ -5,9 +5,8 @@ import { useColorMode } from '@vueuse/core';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import FlashMessages from '@/Layouts/Components/FlashMessages.vue';
-import { Link } from '@inertiajs/vue3'
-import { route } from 'ziggy-js'
-
+import { Link } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
 
 const mode = useColorMode();
 </script>

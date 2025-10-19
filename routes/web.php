@@ -12,20 +12,23 @@ Route::get('/', function () {
     return Inertia::render('Index');
 });
 
-//
 Route::controller(LoginController::class)->group(function (){
-    Route::get('/sign-in', 'redirectLogin')->name('redirectLogin');
-    Route::get('/sign-up', 'redirectRegister')->name('redirectRegister');
-    Route::post('/login-post', 'login')->name('login');
-    Route::post('/register-post', 'register')->name('register');
+    //login
+    Route::get('/sign-in', 'redirectLogin')->name('login.redirect');
+    Route::post('/login-post', 'login')->name('login.post');
+    //register
+    Route::get('/sign-up', 'redirectRegister')->name('register.redirect');
+    Route::post('/register-post', 'register')->name('register.post');
+    //logout
+    Route::post('/logout-post', 'logout')->name('logout');
 
 });
 
 
 Route::controller(UserController::class)->prefix('user')->group(function () {
-    Route::get('/dashboard', 'redirectMyDashboard')->name('redirectMyDashboard');
+    Route::get('/dashboard', 'redirectMyDashboard')->name('user.my-dashboard');
 });
 
-Route::controller(NutritionistController::class)->prefix('professional')->group(function () {
-    Route::get('/dashboard', 'redirectMyPatients')->name('redirectMyPatients');
+Route::controller(NutritionistController::class)->prefix('nutritionist')->group(function () {
+    Route::get('/dashboard', 'redirectMyPatients')->name('nutritionist.my-patients');
 });
