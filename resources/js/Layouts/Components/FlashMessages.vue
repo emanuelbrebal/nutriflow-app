@@ -16,27 +16,30 @@ watch([success, error], () => {
       if (error.value) {
         page.props.flash.error = null;
       }
-    }, 5000); 
+    }, 5000);
   }
 });
 </script>
 
 <template>
-  <Transition name="fade">
-    <div v-if="success" class="alert alert-success">
-      {{ success }}
-    </div>
-  </Transition>
+  <div class="fixed top-6 right-6 z-50 w-full max-w-sm">
 
-  <Transition name="fade">
-    <div v-if="error" class="alert alert-danger">
-      {{ error }}
-    </div>
-  </Transition>
+    <Transition name="fade">
+      <div v-if="success" class="p-4 mb-4 rounded-lg shadow-xl bg-green-600 text-white">
+        {{ success }}
+      </div>
+    </Transition>
+
+    <Transition name="fade">
+      <div v-if="error" class="p-4 rounded-lg shadow-xl bg-red-600 text-white">
+        {{ error }}
+      </div>
+    </Transition>
+
+  </div>
 </template>
 
 <style>
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease;

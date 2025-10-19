@@ -1,6 +1,5 @@
 <script setup>
 import { useForm } from "@inertiajs/vue3";
-
 import FlashMessages from "@/Layouts/Components/FlashMessages.vue";
 
 defineEmits(['register', 'list']);
@@ -9,7 +8,6 @@ const form = useForm();
 
 <template>
   <FlashMessages />
-
   <div class="min-h-screen w-screen flex items-center justify-center bg-gray-100">
     <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 rounded-xl shadow-lg overflow-hidden bg-white">
 
