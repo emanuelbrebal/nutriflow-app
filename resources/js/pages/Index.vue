@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import heroImage from '@/assets/images/landing-hero.png';
+import { Button, Card, CardHeader, CardTitle, CardContent } from '@/components/ui/index';
+
+import { Link } from '@inertiajs/vue3'
+import { route } from 'ziggy-js'
+
+</script>
 <template>
     <div class="font-sans text-gray-900 bg-white">
         <section class="bg-gradient-to-r from-[#5AD598] to-green-400 text-white">
@@ -31,9 +39,9 @@
                     </ul>
                     <div class="flex gap-4">
                         <Button variant="default" size="lg" as-child>
-                            <a href="{{ route('redirectRegister') }}">
-                                Começar Gratuitamente
-                            </a>
+                            <Link :href="route('register')">
+                            Começar Gratuitamente
+                            </Link>
                         </Button>
                         <Button variant="outline" size="lg" class="text-black" as-child>
                             <a href="#planos">
@@ -142,9 +150,9 @@
                             <li>✅ Registro de refeições</li>
                             <li>✅ Acompanhamento básico</li>
                         </ul>
-                        <button class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition">
-                            Começar
-                        </button>
+                        <Link :href="route('register')">
+                        Começar Gratuitamente
+                        </Link>
                     </div>
 
                     <div
@@ -205,9 +213,3 @@
     </div>
 
 </template>
-
-<script setup lang="ts">
-import heroImage from '@/assets/images/landing-hero.png';
-import { Button, Card, CardHeader, CardTitle, CardContent } from '@/components/ui/index'; 
-
-</script>

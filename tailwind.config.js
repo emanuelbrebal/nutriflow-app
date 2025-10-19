@@ -4,14 +4,19 @@ export default {
     './resources/**/*.blade.php',
     './resources/**/*.vue',
     './resources/**/*.js',
+    './resources/js/**/*.vue',
+    './resources/js/pages/**/*.vue',
+    './resources/js/Layouts/**/*.vue',
+    './resources/js/Components/**/*.vue',
+    './resources/js/**/*.{ts,tsx,vue}',
   ],
   theme: {
     extend: {
       colors: {
         sidebar: {
-          DEFAULT: 'oklch(0.205 0 0)',           
-          foreground: 'oklch(0.985 0 0)',         
-          primary: 'oklch(0.488 0.243 264.376)',  
+          DEFAULT: 'oklch(0.205 0 0)',
+          foreground: 'oklch(0.985 0 0)',
+          primary: 'oklch(0.488 0.243 264.376)',
           'primary-foreground': 'oklch(0.985 0 0)',
           accent: 'oklch(0.269 0 0)',
           'accent-foreground': 'oklch(0.985 0 0)',

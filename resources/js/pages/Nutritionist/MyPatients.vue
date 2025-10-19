@@ -1,9 +1,41 @@
+<script setup>
+import ProfessionalLayout from '@/Layouts/ProfessionalLayout.vue'
+
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
+import { Input } from '@/components/ui/input'
+import { Search } from "lucide-vue-next"
+import { Head, Link } from '@inertiajs/vue3'
+import { route } from 'ziggy-js'
+
+defineOptions({
+  layout: ProfessionalLayout
+});
+</script>
+
 <template>
 
   <Head title="Nutriflow - Seu Dashboard">
     <link rel="preconnect" href="https://rsms.me/" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
   </Head>
+
   <div>
     <h2 class="text-xl font-bold">Bem-vindo ao seu painel!</h2>
   </div>
@@ -26,10 +58,9 @@
           </Tooltip>
         </TooltipProvider>
       </span>
+
       <Button variant="outline" class="text-white bg-emerald-400 w-full mb-4 mt-4" as-child>
-        <a href="">
-          Adicionar pacientes
-        </a>
+        <!-- <Link :href="route('patients.create')"> Adicionar pacientes</Link> -->
       </Button>
       <div class="flex w-full items-center gap-1.5 mb-4">
         <Input id="patient-search" type="text" placeholder="Buscar paciente" class="pl-10" />
@@ -95,12 +126,9 @@
           </TableRow>
         </TableBody>
       </Table>
-
-
     </article>
 
     <aside id="planner" class="w-2/5 p-8 shadow bg-white rounded">
-
       <span class="font-bold">
         Seu planner
         <TooltipProvider>
@@ -115,49 +143,15 @@
         </TooltipProvider>
       </span>
       <Button variant="outline" class="text-white bg-emerald-400 w-full mb-4 mt-4" as-child>
-        <a href="">
-          Adicionar tarefa
-        </a>
+        <!-- <Link :href="route('tasks.create')"> Adicionar tarefa</Link> -->
       </Button>
 
       <Table>
         <TableHeader>
-
         </TableHeader>
       </Table>
       Colocar outra tabela aqui>
       tabela com checkboxes
     </aside>
   </section>
-
-
-
 </template>
-
-<script setup>
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import ProfessionalLayout from '@Layouts/ProfessionalLayout.vue'
-import Badge from '@/components/ui/badge/Badge.vue';
-import Button from '@/components/ui/button/Button.vue';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
-import { Input } from '@/components/ui/input'
-import { Search } from "lucide-vue-next"
-
-defineOptions({
-  layout: ProfessionalLayout
-});
-</script>

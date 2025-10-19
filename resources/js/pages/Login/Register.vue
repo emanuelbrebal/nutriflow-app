@@ -1,101 +1,120 @@
 <script setup lang="ts">
-import AuthLayout from "@Layouts/AuthLayout.vue"
+import AuthLayout from '@/Layouts/AuthLayout.vue'; 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import { useForm, Link } from '@inertiajs/vue3'
+import { route } from 'ziggy-js' 
 
 defineOptions({
   layout: AuthLayout,
 })
 
-import { ref } from 'vue'
-import { formatCPF } from '@/utils/formatters/formatCPF'
-import { formatPhone } from '@/utils/formatters/formatPhone'
+const form = useForm({
+  tratamento: null,
+  nome: '',
+  cpf: '',
+  telefone: '',
+  email: '',
+  password: '',
+  password_confirmation: '',
+})
 
-const cpf = ref<string>('')
-const phone = ref<string>('')
-
-
-function onCpfInput(e: Event) {
-  const target = e.target as HTMLInputElement
-  cpf.value = formatCPF(target.value)
+const submit = () => {
+  form.post(route('register'), {
+    onError: () => {
+      form.reset('password', 'password_confirmation')
+    }
+  })
 }
-
-function onPhoneInput(e: Event) {
-  const target = e.target as HTMLInputElement
-  phone.value = formatPhone(target.value)
-}
-
 </script>
 
 <template>
   <div>
     <h2 class="text-2xl font-bold mb-6">Criar conta</h2>
-      <form class="space-y-4" action="register.php" method="POST">
+
+    <form class="space-y-4" @submit.prevent="submit">
       <div class="grid grid-cols-2 gap-4">
         <div>
           <Label class="mb-2" for="tratamento">Tratamento</Label>
-          <Select>
+          <Select v-model="form.tratamento">
             <SelectTrigger id="tratamento">
               <SelectValue placeholder="Selecione" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="nutricionista">Nutricionista</SelectItem>
-              <SelectItem value="nutricionista">Dr.</SelectItem>
-              <SelectItem value="nutricionista">Dra.</SelectItem>
-              <SelectItem value="nutricionista">Aluno(a)</SelectItem>
+              <SelectItem value="dr">Dr.</SelectItem>
+              <SelectItem value="dra">Dra.</SelectItem>
+              <SelectItem value="aluno">Aluno(a)</SelectItem>
             </SelectContent>
           </Select>
+          <div v-if="form.errors.tratamento" class="text-red-500 text-sm mt-1">
+            {{ form.errors.tratamento }}
+          </div>
         </div>
         <div>
           <Label class="mb-2" for="nome">Nome completo</Label>
-          <Input id="nome" type="text" placeholder="Seu nome" />
+          <Input id="nome" type="text" placeholder="Seu nome" v-model="form.nome" />
+          <div v-if="form.errors.nome" class="text-red-500 text-sm mt-1">
+            {{ form.errors.nome }}
+          </div>
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div>
           <Label class="mb-2" for="cpf">CPF</Label>
-          <Input id="cpf" type="text" placeholder="Apenas números"
-          v-model="cpf" 
-          @input="onCpfInput" />
+          <Input id="cpf" type="text" placeholder="Apenas números" v-model="form.cpf" />
+          <div v-if="form.errors.cpf" class="text-red-500 text-sm mt-1">
+            {{ form.errors.cpf }}
+          </div>
         </div>
         <div>
           <Label class="mb-2" for="telefone">Telefone</Label>
-          <Input id="telefone" type="text" placeholder="(DDD) + número" 
-          @input="onPhoneInput"/>
+          <Input id="telefone" type="text" placeholder="(DDD) + número" v-model="form.telefone" />
+           <div v-if="form.errors.telefone" class="text-red-500 text-sm mt-1">
+            {{ form.errors.telefone }}
+          </div>
         </div>
       </div>
 
       <div>
         <Label class="mb-2" for="email">E-mail para login</Label>
-        <Input id="email" type="email" placeholder="seu@email.com" />
+        <Input id="email" type="email" placeholder="seu@email.com" v-model="form.email" />
+        <div v-if="form.errors.email" class="text-red-500 text-sm mt-1">
+            {{ form.errors.email }}
+        </div>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div>
           <Label class="mb-2" for="password">Senha de acesso</Label>
-          <Input id="password" type="password" placeholder="••••••••" />
+          <Input id="password" type="password" placeholder="••••••••" v-model="form.password" />
+          <div v-if="form.errors.password" class="text-red-500 text-sm mt-1">
+            {{ form.errors.password }}
+          </div>
         </div>
         <div>
           <Label class="mb-2" for="confirm_password">Confirmar senha</Label>
-          <Input id="confirm_password" type="password" placeholder="••••••••" />
+          <Input id="confirm_password" type="password" placeholder="••••••••" v-model="form.password_confirmation" />
         </div>
       </div>
 
-      <Button class="w-full mt-4">Cadastrar e avançar</Button>
+      <Button class="w-full mt-4" type="submit" :disabled="form.processing">
+        Cadastrar e avançar
+      </Button>
     </form>
 
     <p class="mt-6 text-sm text-gray-500 text-center">
       Já tem conta?
-      <a href="/sign-in" class="text-green-600 hover:underline">Clique aqui</a>
+      <Link :href="route('redirectLogin')" class="text-green-600 hover:underline">Clique aqui</Link>
     </p>
 
     <p class="mt-4 text-xs text-gray-400 text-center">
       Ao se cadastrar no Nutriflow, você concorda com os
-      <a href="/terms" class="underline"> termos de uso </a> e
-      <a href="/privacy" class="underline"> privacidade</a>.
+      <a href="#" class="underline"> termos de uso </a> e
+      <a href="#" class="underline"> privacidade</a>.
     </p>
   </div>
 </template>
