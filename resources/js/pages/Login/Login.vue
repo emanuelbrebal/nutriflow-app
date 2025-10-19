@@ -12,7 +12,7 @@ const form = useForm({
 });
 
 const submit = () => {
-  form.post(route('login'), {
+  form.post(route('login.post'), {
     onError: () => form.reset('password'),
   });
 };
@@ -53,7 +53,7 @@ defineOptions({
 
     <p class="mt-6 text-sm text-gray-500 text-center">
       Não tem conta?
-      <Link :href="route('redirectRegister')" class="font-bold text-green-500 hover:underline">
+      <Link :href="route('register.redirect')" class="font-bold text-green-500 hover:underline">
       Cadastre-se
       </Link>
     </p>

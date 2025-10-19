@@ -39,7 +39,7 @@ import { route } from 'ziggy-js'
                     </ul>
                     <div class="flex gap-4">
                         <Button variant="default" size="lg" as-child>
-                            <Link :href="route('register')">
+                            <Link :href="route('login.redirect')">
                             Começar Gratuitamente
                             </Link>
                         </Button>
@@ -150,7 +150,7 @@ import { route } from 'ziggy-js'
                             <li>✅ Registro de refeições</li>
                             <li>✅ Acompanhamento básico</li>
                         </ul>
-                        <Link :href="route('register')">
+                        <Link :href="route('login.redirect')">
                         Começar Gratuitamente
                         </Link>
                     </div>
@@ -200,9 +200,9 @@ import { route } from 'ziggy-js'
                     protocolos e análise de dados.
                 </p>
                 <Button variant="default" size="lg" as-child>
-                    <a href="{{ route('redirectRegister') }}">
+                     <Link :href="route('login.redirect')">
                         Começar Gratuitamente
-                    </a>
+                        </Link>
                 </Button>
             </div>
         </section>

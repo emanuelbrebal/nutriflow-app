@@ -80,6 +80,7 @@ defineOptions({
             <TableHead class="w-[100px]">Usuario</TableHead>
             <TableHead>E-mail</TableHead>
             <TableHead>Prazo do protocolo</TableHead>
+            <TableHead>Protocolo Atual</TableHead>
             <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
@@ -101,6 +102,11 @@ defineOptions({
               dd/mm/yyyy
             </TableCell>
             <TableCell class="font-medium">
+              <Button variant="default" class="bg-blue-400 text-white">
+                Visualizar
+              </Button>
+            </TableCell>
+            <TableCell class="font-medium">
               <Badge variant="outline" class="bg-emerald-300">Ativo</Badge>
             </TableCell>
           </TableRow>
@@ -119,6 +125,11 @@ defineOptions({
             </TableCell>
             <TableCell class="font-medium">
               dd/mm/yyyy
+            </TableCell>
+            <TableCell class="font-medium">
+              <Button variant="default" class="bg-blue-400 text-white">
+                Visualizar
+              </Button>
             </TableCell>
             <TableCell class="font-medium">
               <Badge variant="destructive">Inativo</Badge>
