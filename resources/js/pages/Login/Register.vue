@@ -29,19 +29,17 @@ defineOptions({
 });
 
 const form = useForm({
-  tratamento: null,
-  nome: '',
-  code: '',
-  telefone: '',
+  account_type: null,
+  full_name: '',
+  code: null,
   email: '',
   password: '',
-  password_confirmation: '',
 });
 
 const submit = () => {
   form.post(route('register.post'), {
     onError: () => {
-      form.reset('password', 'password_confirmation')
+      form.reset('password')
     }
   })
 };
@@ -49,17 +47,14 @@ const submit = () => {
 
 <template>
   <div>
-    <h2 class="text-2xl font-bold mb-6">Criar conta</h2>
+    <!-- trocar values para id posteriormente -->
+    <h2 class="text-2xl font-bold mb-6">Criar conta de usuário</h2>
     <form class="space-y-4" @submit.prevent="submit">
-      <div class="grid w-full max-w-sm items-center gap-1.5">
-        <Label for="picture">Foto de Perfil</Label>
-        <Input id="picture" type="file" />
-      </div>
       <div class="grid grid-cols-2 gap-4">
-        <div>
-          <Label class="mb-2" for="tratamento">Tratamento</Label>
-          <Select v-model="form.tratamento">
-            <SelectTrigger id="tratamento">
+        <div class="w-full flex flex-col justify-end">
+          <Label class="mb-2" for="account_type">Eu sou...</Label>
+          <Select v-model="form.account_type">
+            <SelectTrigger id="account_type">
               <SelectValue placeholder="Selecione" />
             </SelectTrigger>
             <SelectContent>
@@ -68,53 +63,47 @@ const submit = () => {
               <SelectItem value="aluno">Aluno(a)</SelectItem>
             </SelectContent>
           </Select>
-          <div v-if="form.errors.tratamento" class="text-red-500 text-sm mt-1">
-            {{ form.errors.tratamento }}
+          <div v-if="form.errors.account_type" class="text-red-500 text-sm mt-1">
+            {{ form.errors.account_type }}
           </div>
         </div>
         <div>
-          <div class="flex flex-row items-center">
-            <Label class="mb-2" for="cpf">Código</Label>
-            <TooltipProvider>
-              <Tooltip>
-                <Badge variant="outline" class="m-1 rounded-full">
-                  <TooltipTrigger class="font-bold">i</TooltipTrigger>
-                </Badge>
-                <TooltipContent>
-                  <p class="text-center">
-                    Informe o código que seu nutricionista passou.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-          <div>
-            <PinInput id="pin-input" v-model="value" placeholder="o" @complete="handleComplete">
-              <PinInputGroup>
-                <PinInputSlot v-for="(id, index) in 6" :key="id" :index="index" />
-              </PinInputGroup>
-            </PinInput>
-          </div>
-          <div v-if="form.errors.code" class="text-red-500 text-sm mt-1">
-            {{ form.errors.code }}
+          <div v-if="form.account_type === 'paciente'">
+            <div class="flex flex-row items-center">
+              <Label class="mb-2" for="cpf">Código</Label>
+              <TooltipProvider>
+                <Tooltip>
+                  <Badge variant="outline" class="m-1 rounded-full">
+                    <TooltipTrigger class="font-bold">i</TooltipTrigger>
+                  </Badge>
+                  <TooltipContent>
+                    <p class="text-center">
+                      Informe o código que seu nutricionista passou.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            <div>
+              <PinInput id="pin-input" v-model="value" placeholder="o" @complete="handleComplete">
+                <PinInputGroup>
+                  <PinInputSlot v-for="(id, index) in 6" :key="id" :index="index" />
+                </PinInputGroup>
+              </PinInput>
+            </div>
+            <div v-if="form.errors.code" class="text-red-500 text-sm mt-1">
+              {{ form.errors.code }}
+            </div>
           </div>
         </div>
-
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols gap-4">
         <div>
-          <Label class="mb-2" for="nome">Nome completo</Label>
-          <Input id="nome" type="text" placeholder="Seu nome" v-model="form.nome" />
-          <div v-if="form.errors.nome" class="text-red-500 text-sm mt-1">
-            {{ form.errors.nome }}
-          </div>
-        </div>
-        <div>
-          <Label class="mb-2" for="telefone">Telefone</Label>
-          <Input id="telefone" type="text" placeholder="(DDD) + número" v-model="form.telefone" />
-          <div v-if="form.errors.telefone" class="text-red-500 text-sm mt-1">
-            {{ form.errors.telefone }}
+          <Label class="mb-2" for="full_name">Nome completo</Label>
+          <Input id="full_name" type="text" placeholder="Seu nome" v-model="form.full_name" />
+          <div v-if="form.errors.full_name" class="text-red-500 text-sm mt-1">
+            {{ form.errors.full_name }}
           </div>
         </div>
       </div>
@@ -127,17 +116,13 @@ const submit = () => {
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols gap-4">
         <div>
           <Label class="mb-2" for="password">Senha de acesso</Label>
           <Input id="password" type="password" placeholder="••••••••" v-model="form.password" />
           <div v-if="form.errors.password" class="text-red-500 text-sm mt-1">
             {{ form.errors.password }}
           </div>
-        </div>
-        <div>
-          <Label class="mb-2" for="confirm_password">Confirmar senha</Label>
-          <Input id="confirm_password" type="password" placeholder="••••••••" v-model="form.password_confirmation" />
         </div>
       </div>
 
