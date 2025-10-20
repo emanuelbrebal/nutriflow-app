@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Icon } from '@iconify/vue';
 import { useColorMode } from '@vueuse/core';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import FlashMessages from '@/Layouts/Components/FlashMessages.vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
@@ -12,11 +9,11 @@ const mode = useColorMode();
 </script>
 
 <template>
-  <div class="h-screen flex ">
+  <div class="flex">
     <FlashMessages />
     <aside
-      class="w-64 bg-white border-r-4 border-[#5AD598] text-black p-[24px] pdl-4 flex flex-col justify-content-evenly">
-      <section id="header-top">
+      class="w-64 bg-white border-r-4 border-[#5AD598] text-black p-[24px] pdl-4 flex flex-col justify-content-evenly h-screen sticky top-0">
+      <section id="header-top" class="h-fit">
 
         <h1 class="text-4xl font-bold mb-6 text-[#5AD598] justify-self-center">Nutriflow</h1>
         <div id="user-info" class="flex flex-col justify-center m-4">
@@ -83,14 +80,14 @@ const mode = useColorMode();
         </div> -->
 
         <div id="profile" class="m-4">
-          <Link :href="route('user.onboarding-form')" class="block hover:text-gray-200">Meu Painel</Link>
+          <Link :href="route('user.onboarding-form')" class="block hover:text-gray-200">Meu Perfil</Link>
           <Link :href="route('logout')" method="post" as="button" type="button" class="block hover:text-gray-200">
           Encerrar sessão</Link>
         </div>
       </section>
     </aside>
 
-    <div class="flex-1 flex flex-col bg-[#e2e2e2]">
+    <div class="flex-1 flex flex-col bg-[#e2e2e2] min-h-screen h-fit">
       <main class="flex-1 p-6">
         <slot />
       </main>
