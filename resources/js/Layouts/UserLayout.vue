@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import AppLayout from './AppLayout.vue';
+import { Link } from '@inertiajs/vue3';
+import { Route } from 'ziggy-js';
 </script>
 
 <template>
@@ -9,7 +11,7 @@ import AppLayout from './AppLayout.vue';
     </template>
 
     <template #navigation-links>
-      <a href="#" class="block hover:text-gray-200">Meu Painel</a>
+      <Link :href="route('user.my-dashboard')" class="block hover:text-gray-200">Meu Painel</Link>
       <a href="#" class="block hover:text-gray-200">Minhas Refeições</a>
       <a href="#" class="block hover:text-gray-200">Progressos</a>
       <a href="#" class="block hover:text-gray-200">Análises</a>

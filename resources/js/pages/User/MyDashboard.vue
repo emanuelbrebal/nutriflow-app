@@ -9,6 +9,7 @@ defineOptions({
 });
 
 import UserProgress from '@/Layouts/Components/UserDashboard/UserProgress.vue';
+import CaloriesLineChart from '@/Layouts/Components/UserDashboard/CaloriesLineChart.vue';
 import MacroLineChart from '@/Layouts/Components/UserDashboard/MacroLineChart.vue';
 import WaterLineChart from '@/Layouts/Components/UserDashboard/WaterLineChart.vue';
 import Achievements from '@/Layouts/Components/UserDashboard/Achievements.vue';
@@ -47,10 +48,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
             </TabsTrigger>
           </TabsList>
 
-
           <TabsContent value="cals">
             <article id="line-chart">
-              <!-- Calorias -->
+             <CaloriesLineChart/>
             </article>
           </TabsContent>
           <TabsContent value="macros">
