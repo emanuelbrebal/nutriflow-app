@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,13 +18,13 @@ class LoginController extends Controller
         return Inertia::render('Login/Register');
     }
 
-    public function login(){
-        //login unificado apenas ajustando a rota para caso o usuário seja paciente ou nutricionista
+    public function login(LoginRequest $request){
+        //login unificado apenas ajustando a rota para caso o usuário seja paciente ou nutricionista, verificando o $request->account_type
         return redirect()->route('user.my-dashboard')->with('success', "Usuário autenticado com sucesso!");
     }
 
-    public function register(){
-        //assim como o login, o registro é unificado apenas ajustando a rota para caso o usuário seja paciente ou nutricionista
+    public function register(RegisterRequest $request){
+        //assim como o login, o registro é unificado apenas ajustando a rota para caso o usuário seja paciente ou nutricionista, verificando o $request->account_type
 
         return redirect()->route('user.my-dashboard')->with('success', "Usuário se cadastrou com sucesso!");
     }
