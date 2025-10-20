@@ -8,11 +8,18 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // retorna landing page
-Route::get('/', function () {
+Route::get('/nutriflow-welcome', function () {
     return Inertia::render('Index');
-});
+})->name('ladingpage.redirect');
 
-Route::controller(LoginController::class)->group(function (){
+Route::get('/upgrade-plan', function () {
+    return Inertia::render('Upgrade/UpgradePlan');
+})->name('plans.upgrade');
+Route::get('/upgrade-plan/payment', function () {
+    return Inertia::render('Upgrade/PaymentView');
+})->name('plans.payment');
+
+Route::controller(LoginController::class)->group(function () {
     //login
     Route::get('/sign-in', 'redirectLogin')->name('login.redirect');
     Route::post('/login-post', 'login')->name('login.post');
@@ -21,7 +28,6 @@ Route::controller(LoginController::class)->group(function (){
     Route::post('/register-post', 'register')->name('register.post');
     //logout
     Route::post('/logout-post', 'logout')->name('logout');
-
 });
 
 

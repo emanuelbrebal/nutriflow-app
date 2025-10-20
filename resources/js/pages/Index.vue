@@ -5,6 +5,8 @@ import { Button, Card, CardHeader, CardTitle, CardContent } from '@/components/u
 import { Link } from '@inertiajs/vue3'
 import { route } from 'ziggy-js'
 
+import PlansCards from '@/Layouts/Components/Plans/PlansCards.vue';
+
 </script>
 <template>
     <div class="font-sans text-gray-900 bg-white">
@@ -134,62 +136,7 @@ import { route } from 'ziggy-js'
 
             </div>
         </section>
-        <section id="planos" class="bg-gray-50 py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-12">
-                    Nossos Planos
-                </h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
-                        <h3 class="text-xl font-bold mb-4 text-center">Básico</h3>
-                        <p class="text-gray-600 mb-6 text-center">Ideal para começar sua jornada nutricional.</p>
-                        <div class="text-4xl font-extrabold text-center mb-6">Gratuito</div>
-                        <ul class="text-gray-600 mb-6 space-y-2">
-                            <li>✅ Criação de dieta personalizada</li>
-                            <li>✅ Registro de refeições</li>
-                            <li>✅ Acompanhamento básico</li>
-                        </ul>
-                        <Link :href="route('login.redirect')">
-                        Começar Gratuitamente
-                        </Link>
-                    </div>
-
-                    <div
-                        class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-2 border-green-500">
-                        <h3 class="text-xl font-bold mb-4 text-center">Intermediário</h3>
-                        <p class="text-gray-600 mb-6 text-center">Para quem quer resultados mais detalhados.</p>
-                        <div class="text-4xl font-extrabold text-center mb-6">R$49<span
-                                class="text-lg font-medium">/mês</span></div>
-                        <ul class="text-gray-600 mb-6 space-y-2">
-                            <li>✅ Todos recursos do Básico</li>
-                            <li>✅ Análise avançada de refeições</li>
-                            <li>✅ Relatórios semanais</li>
-                            <li>✅ Dicas personalizadas</li>
-                        </ul>
-                        <button class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition">
-                            Assinar Plano
-                        </button>
-                    </div>
-
-                    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
-                        <h3 class="text-xl font-bold mb-4 text-center">Premium</h3>
-                        <p class="text-gray-600 mb-6 text-center">O plano completo para transformar sua alimentação.</p>
-                        <div class="text-4xl font-extrabold text-center mb-6">R$79<span
-                                class="text-lg font-medium">/mês</span></div>
-                        <ul class="text-gray-600 mb-6 space-y-2">
-                            <li>✅ Todos recursos do Intermediário</li>
-                            <li>✅ Consultoria nutricional online</li>
-                            <li>✅ Acesso a insights avançados</li>
-                            <li>✅ Monitoramento diário personalizado</li>
-                        </ul>
-                        <button class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition">
-                            Assinar Plano
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <PlansCards />
         <section class="py-20 bg-[#5AD598] text-white">
             <div class="container mx-auto px-6 text-center">
                 <h2 class="text-3xl md:text-4xl font-bold mb-6">
@@ -200,9 +147,9 @@ import { route } from 'ziggy-js'
                     protocolos e análise de dados.
                 </p>
                 <Button variant="default" size="lg" as-child>
-                     <Link :href="route('login.redirect')">
-                        Começar Gratuitamente
-                        </Link>
+                    <Link :href="route('login.redirect')">
+                    Começar Gratuitamente
+                    </Link>
                 </Button>
             </div>
         </section>
