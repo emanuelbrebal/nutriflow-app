@@ -1,66 +1,146 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import PlansLayout from '@/Layouts/PlansLayout.vue';
+import { Link, router } from '@inertiajs/vue3';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter
+} from '@/components/ui/card';
+import { Check } from 'lucide-vue-next'; 
+
+defineOptions({
+  layout: PlansLayout,
+});
+
+const featuresBasico = [
+  'Criação de dieta personalizada',
+  'Registro de refeições',
+  'Acompanhamento básico',
+];
+
+const featuresIntermediario = [
+  'Todos recursos do Básico',
+  'Análise avançada de refeições',
+  'Relatórios semanais',
+  'Dicas personalizadas',
+];
+
+const featuresPremium = [
+  'Todos recursos do Intermediário',
+  'Consultoria nutricional online',
+  'Acesso a insights avançados',
+  'Monitoramento diário personalizado',
+];
+
+function goBack() {
+  if (window.history.length > 2) {
+   window.history.back();
+  } else {
+    router.visit(route('dashboard')); 
+  }
+}
 </script>
+
 <template>
+  <section class="w-full p-6 md:p-8">
+    
+    <header class="relative w-full text-center mb-12">
+      <Button 
+        @click.prevent="goBack" 
+        variant="outline" 
+        class="absolute left-0 top-0"
+      >
+        Voltar
+      </Button>
 
-    <section id="planos" class="bg-gray-50 py-20">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12">
-                Nossos Planos
-            </h2>
+      <h1 class="text-3xl font-bold">
+        Nossos Planos
+      </h1>
+      <p class="text-lg text-gray-600 mt-2">
+        Escolha o plano que melhor se adapta aos seus objetivos e 
+        desbloqueie todo o potencial do Nutriflow.
+      </p>
+    </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
-                    <h3 class="text-xl font-bold mb-4 text-center">Básico</h3>
-                    <p class="text-gray-600 mb-6 text-center">Ideal para começar sua jornada nutricional.</p>
-                    <div class="text-4xl font-extrabold text-center mb-6">Gratuito</div>
-                    <ul class="text-gray-600 mb-6 space-y-2">
-                        <li>✅ Criação de dieta personalizada</li>
-                        <li>✅ Registro de refeições</li>
-                        <li>✅ Acompanhamento básico</li>
-                    </ul>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                    <Link :href="route('login.redirect')"
-                        class="w-full bg-gray-800 hover:bg-black text-white p-2 rounded transition">
-                    Começar Gratuitamente
-                    </Link>
-                </div>
+      <Card class="flex flex-col">
+        <CardHeader class="text-center">
+          <CardTitle class="text-xl font-semibold">Básico</CardTitle>
+          <CardDescription>
+            Ideal para começar sua jornada nutricional.
+          </CardDescription>
+        </CardHeader>
+        <CardContent class="flex-1">
+          <p class="text-center text-4xl font-bold mb-6">Gratuito</p>
+          <ul class="space-y-2">
+            <li v-for="feature in featuresBasico" :key="feature" class="flex items-center gap-2">
+              <Check class="w-5 h-5 text-green-500" />
+              <span class="text-gray-700">{{ feature }}</span>
+            </li>
+          </ul>
+        </CardContent>
+        <CardFooter>
+          <Button as-child class="w-full">
+            <Link :href="route('register.redirect')">Começar Gratuitamente</Link>
+          </Button>
+        </CardFooter>
+      </Card>
 
-                <div
-                    class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-2 border-green-500">
-                    <h3 class="text-xl font-bold mb-4 text-center">Intermediário</h3>
-                    <p class="text-gray-600 mb-6 text-center">Para quem quer resultados mais detalhados.</p>
-                    <div class="text-4xl font-extrabold text-center mb-6">R$49<span
-                            class="text-lg font-medium">/mês</span></div>
-                    <ul class="text-gray-600 mb-6 space-y-2">
-                        <li>✅ Todos recursos do Básico</li>
-                        <li>✅ Análise avançada de refeições</li>
-                        <li>✅ Relatórios semanais</li>
-                        <li>✅ Dicas personalizadas</li>
-                    </ul>
-                    <Link :href="route('plans.payment')"
-                        class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition">
-                    Assinar Plano
-                    </Link>
-                </div>
+      <Card class="flex flex-col border-2 border-green-500 shadow-lg">
+        <CardHeader class="text-center">
+          <CardTitle class="text-xl font-semibold">Intermediário</CardTitle>
+          <CardDescription>
+            Para quem quer resultados mais detalhados.
+          </CardDescription>
+        </CardHeader>
+        <CardContent class="flex-1">
+          <p class="text-center text-4xl font-bold mb-6">
+            R$49<span class="text-lg font-normal text-gray-600">/mês</span>
+          </p>
+          <ul class="space-y-2">
+            <li v-for="feature in featuresIntermediario" :key="feature" class="flex items-center gap-2">
+              <Check class="w-5 h-5 text-green-500" />
+              <span class="text-gray-700">{{ feature }}</span>
+            </li>
+          </ul>
+        </CardContent>
+        <CardFooter>
+          <Button as-child class="w-full bg-green-500 hover:bg-green-600">
+            <Link :href="route('payment.redirect', { plan: 'intermediario' })">Assinar Plano</Link>
+          </Button>
+        </CardFooter>
+      </Card>
 
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300">
-                    <h3 class="text-xl font-bold mb-4 text-center">Premium</h3>
-                    <p class="text-gray-600 mb-6 text-center">O plano completo para transformar sua alimentação.</p>
-                    <div class="text-4xl font-extrabold text-center mb-6">R$79<span
-                            class="text-lg font-medium">/mês</span></div>
-                    <ul class="text-gray-600 mb-6 space-y-2">
-                        <li>✅ Todos recursos do Intermediário</li>
-                        <li>✅ Consultoria nutricional online</li>
-                        <li>✅ Acesso a insights avançados</li>
-                        <li>✅ Monitoramento diário personalizado</li>
-                    </ul>
-                    <Link :href="route('plans.payment')"
-                        class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition">
-                    Assinar Plano
-                    </Link>
-                </div>
-            </div>
-        </div>
-    </section>
+      <Card class="flex flex-col">
+        <CardHeader class="text-center">
+          <CardTitle class="text-xl font-semibold">Premium</CardTitle>
+          <CardDescription>
+            O plano completo para transformar sua alimentação.
+          </CardDescription>
+        </CardHeader>
+        <CardContent class="flex-1">
+          <p class="text-center text-4xl font-bold mb-6">
+            R$79<span class="text-lg font-normal text-gray-600">/mês</span>
+          </p>
+          <ul class="space-y-2">
+            <li v-for="feature in featuresPremium" :key="feature" class="flex items-center gap-2">
+              <Check class="w-5 h-5 text-green-500" />
+              <span class="text-gray-700">{{ feature }}</span>
+            </li>
+          </ul>
+        </CardContent>
+        <CardFooter>
+          <Button as-child class="w-full">
+            <Link :href="route('payment.redirect', { plan: 'premium' })">Assinar Plano</Link>
+          </Button>
+        </CardFooter>
+      </Card>
+      
+    </div>
+  </section>
 </template>

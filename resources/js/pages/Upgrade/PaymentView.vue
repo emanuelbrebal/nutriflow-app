@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import PlansCards from '@/Layouts/Components/Plans/PlansCards.vue';
 import PlansLayout from '@/Layouts/PlansLayout.vue';
-import { Link } from '@inertiajs/vue3';
 defineOptions({
     layout: PlansLayout,
 });
+
+import Payment from '@/Layouts/Components/Plans/Payment.vue';
+
 </script>
 
 <template>
-    <section class="w-full">
-        <PlansCards />
+    <section class="">
+        <Payment />
     </section>
 </template>

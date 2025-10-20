@@ -17,7 +17,7 @@ Route::get('/upgrade-plan', function () {
 })->name('plans.upgrade');
 Route::get('/upgrade-plan/payment', function () {
     return Inertia::render('Upgrade/PaymentView');
-})->name('plans.payment');
+})->name('payment.redirect');
 
 Route::controller(LoginController::class)->group(function () {
     //login
@@ -33,6 +33,8 @@ Route::controller(LoginController::class)->group(function () {
 
 Route::controller(UserController::class)->prefix('user')->group(function () {
     Route::get('/dashboard', 'redirectMyDashboard')->name('user.my-dashboard');
+    Route::get('/onboarding-form', 'redirectOnboardingForm')->name('user.onboarding-form');
+    Route::get('/my-profile', 'redirectMyProfile')->name('user.my-profile');
 });
 
 Route::controller(NutritionistController::class)->prefix('nutritionist')->group(function () {
