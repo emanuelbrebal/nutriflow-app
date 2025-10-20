@@ -23,6 +23,7 @@ import { Input } from '@/components/ui/input'
 import { Search } from "lucide-vue-next"
 import { Head, Link } from '@inertiajs/vue3'
 import { route } from 'ziggy-js'
+import Planner from '@/Layouts/Components/Nutritionist/MyPatients/Planner.vue';
 
 defineOptions({
   layout: ProfessionalLayout
@@ -36,11 +37,11 @@ defineOptions({
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
   </Head>
 
-  <div>
-    <h2 class="text-xl font-bold">Bem-vindo ao seu painel!</h2>
-  </div>
   <section class="flex min-h-full w-full gap-6 mb-4">
     <article id="my-patients" class="w-3/5 p-8 shadow bg-white rounded border">
+      <div>
+        <h2 class="text-xl font-bold mb-4">Bem-vindo ao painel de seus pacientes!</h2>
+      </div>
       <span class="font-bold">
         Seus pacientes
         <TooltipProvider>
@@ -79,8 +80,10 @@ defineOptions({
             <TableHead class="w-[100px]"></TableHead>
             <TableHead class="w-[100px]">Usuario</TableHead>
             <TableHead>E-mail</TableHead>
-            <TableHead>Prazo do protocolo</TableHead>
             <TableHead>Protocolo Atual</TableHead>
+            <TableHead>Prazo do protocolo</TableHead>
+            <TableHead>Avaliação Atual</TableHead>
+            <TableHead>Prazo Avaliação</TableHead>
             <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
@@ -99,12 +102,24 @@ defineOptions({
               user_name.surname@email.com
             </TableCell>
             <TableCell class="font-medium">
+              <Button variant="default" class="bg-orange-400 text-white">
+                <Link :href="route('nutritionist.redirect.diet_builder')">
+                  Visualizar
+                </Link>
+              </Button>
+            </TableCell>
+            <TableCell class="font-medium">
               dd/mm/yyyy
             </TableCell>
             <TableCell class="font-medium">
-              <Button variant="default" class="bg-blue-400 text-white">
-                Visualizar
+              <Button as-child variant="default" class="bg-blue-400 text-white">
+                <Link :href="route('nutritionist.redirect.set_new_evaluation')">
+                  Visualizar
+                </Link>
               </Button>
+            </TableCell>
+            <TableCell class="font-medium">
+              dd/mm/yyyy
             </TableCell>
             <TableCell class="font-medium">
               <Badge variant="outline" class="bg-emerald-300">Ativo</Badge>
@@ -124,12 +139,20 @@ defineOptions({
               user_name.surname2@email.com
             </TableCell>
             <TableCell class="font-medium">
+              <Button disabled variant="default" class="bg-orange-400 text-white">
+                Visualizar
+              </Button>
+            </TableCell>
+            <TableCell class="font-medium">
               dd/mm/yyyy
             </TableCell>
             <TableCell class="font-medium">
-              <Button variant="default" class="bg-blue-400 text-white">
+              <Button disabled variant="default" class="bg-blue-400 text-white">
                 Visualizar
               </Button>
+            </TableCell>
+            <TableCell class="font-medium">
+              dd/mm/yyyy
             </TableCell>
             <TableCell class="font-medium">
               <Badge variant="destructive">Inativo</Badge>
@@ -140,29 +163,7 @@ defineOptions({
     </article>
 
     <aside id="planner" class="w-2/5 p-8 shadow bg-white rounded">
-      <span class="font-bold">
-        Seu planner
-        <TooltipProvider>
-          <Tooltip>
-            <Badge variant="outline" class="m-1 rounded-full">
-              <TooltipTrigger class="font-bold">i</TooltipTrigger>
-            </Badge>
-            <TooltipContent>
-              <p>Gerencie suas atividades aqui.</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </span>
-      <Button variant="outline" class="text-white bg-emerald-400 w-full mb-4 mt-4" as-child>
-        <!-- <Link :href="route('tasks.create')"> Adicionar tarefa</Link> -->
-      </Button>
-
-      <Table>
-        <TableHeader>
-        </TableHeader>
-      </Table>
-      Colocar outra tabela aqui>
-      tabela com checkboxes
+      <Planner/>
     </aside>
   </section>
 </template>

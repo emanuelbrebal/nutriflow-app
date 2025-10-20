@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import AppLayout from './AppLayout.vue';
 </script>
 
@@ -9,7 +10,7 @@ import AppLayout from './AppLayout.vue';
     </template>
 
     <template #navigation-links>
-      <a href="#" class="block hover:text-gray-200">Meu Painel</a>
+      <Link :href="route('nutritionist.my-patients')" class="block hover:text-gray-200">Meus Pacientes</Link>
       <a href="#" class="block hover:text-gray-200">Gerenciar Cardápios</a>
       <a href="#" class="block hover:text-gray-200">Análises</a>
     </template>
