@@ -20,6 +20,16 @@ class NutritionistController extends Controller
         // passar os pacientes com seus relacionamentos
         return Inertia::render('Nutritionist/MyPatients');
     }
+    public function redirectSetNewEvaluation()
+    {
+        // passar os pacientes com seus relacionamentos
+        return Inertia::render('Nutritionist/EvaluationsForm');
+    }
+    public function redirectSetNewDietaryProtocol()
+    {
+        // passar os pacientes com seus relacionamentos
+        return Inertia::render('Nutritionist/DietBuilder');
+    }
     /**
      * Store a newly created resource in storage.
      */

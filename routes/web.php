@@ -39,4 +39,6 @@ Route::controller(UserController::class)->prefix('user')->group(function () {
 
 Route::controller(NutritionistController::class)->prefix('nutritionist')->group(function () {
     Route::get('/dashboard', 'redirectMyPatients')->name('nutritionist.my-patients');
+    Route::get('/set-new-evaluation', 'redirectSetNewEvaluation')->name('nutritionist.redirect.set_new_evaluation');
+    Route::get('/set-new-dietary-protocol', 'redirectSetNewDietaryProtocol')->name('nutritionist.redirect.diet_builder');
 });
