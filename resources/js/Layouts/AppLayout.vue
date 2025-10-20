@@ -12,7 +12,7 @@ const mode = useColorMode();
 </script>
 
 <template>
-  <div class="min-h-screen flex ">
+  <div class="h-screen flex ">
     <FlashMessages />
     <aside
       class="w-64 bg-white border-r-4 border-[#5AD598] text-black p-[24px] pdl-4 flex flex-col justify-content-evenly">
@@ -47,15 +47,15 @@ const mode = useColorMode();
           <span id="upgrade-title" class="font-bold">
             Melhore seu Plano
           </span>
-          <span id="upgrade-trust" class="underline">
+          <span id="upgrade-trust">
             Desbloqueie análises, recursos avançados e IA.
           </span>
-          <Button variant="outline" class="bg-[#49D18D] text-white">
-            Fazer Upgrade
-          </Button>
+          <Link :href="route('plans.upgrade')" variant="outline" class="bg-[#49D18D] text-white p-1 rounded">
+          Fazer Upgrade
+          </Link>
         </div>
 
-        <div id="dark-mode" class="min-w-full pl-3">
+        <!-- <div id="dark-mode" class="min-w-full pl-3">
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
               <Button variant="outline" class="flex items-center gap-2 ">
@@ -80,10 +80,10 @@ const mode = useColorMode();
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </div> -->
 
         <div id="profile" class="m-4">
-          <a href="#" class="block hover:text-gray-200">Meu Perfil</a>
+          <Link :href="route('user.onboarding-form')" class="block hover:text-gray-200">Meu Painel</Link>
           <Link :href="route('logout')" method="post" as="button" type="button" class="block hover:text-gray-200">
           Encerrar sessão</Link>
         </div>
