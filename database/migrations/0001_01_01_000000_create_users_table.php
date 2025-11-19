@@ -1,5 +1,8 @@
 <?php
 
+use App\Enums\AccountTypeEnum;
+use App\Enums\PlanLevelEnum;
+use App\Enums\StatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,6 +19,16 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+
+            $table->integer('account_type')->default(AccountTypeEnum::Patient);
+            $table->integer('plan_level')->default(PlanLevelEnum::Free);
+
+            $table->string('user_code', 6)->unique();
+            $table->string('mobile_number')->nullable();
+
+            $table->integer('account_status')->default(StatusEnum::Incomplete);
+            $table->string('profile_picture_path')->nullable();
+
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
