@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum AccountTypeEnum: int
+enum ObjectivesEnum: int
 {
     case WeightLoss = 1;
     case WeightMaintains = 2;
