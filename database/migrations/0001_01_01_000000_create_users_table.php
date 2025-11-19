@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('mobile_number')->nullable();
 
             $table->integer('account_status')->default(StatusEnum::Incomplete);
+            $table->string('profile_picture_path')->nullable();
+
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
