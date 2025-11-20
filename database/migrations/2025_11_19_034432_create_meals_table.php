@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('meals', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('food_id')->constrained('foods');
-
             $table->boolean('is_substitute')->default(false);
 
             $table->string('title', 50);
