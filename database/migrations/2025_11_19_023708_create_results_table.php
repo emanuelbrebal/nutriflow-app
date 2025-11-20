@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('results', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('physical_evaluation_id')->constrained()->onDelete('cascade');
 
-            $table->float('IMC');
+            $table->float('imc'); 
             $table->float('body_fat_percentage');
             $table->float('fat_mass');
-            $table->float('light_mass');
+            $table->float('lean_mass'); 
             $table->float('basal_metabolic_rate');
 
             $table->timestamps();
