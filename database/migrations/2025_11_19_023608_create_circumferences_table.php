@@ -14,7 +14,9 @@ return new class extends Migration
     {
         Schema::create('circumferences', function (Blueprint $table) {
             $table->id();
-            
+
+            $table->foreignId('physical_evaluation_id')->constrained('physical_evaluations')->onDelete('cascade')->unique();
+
             $table->float('circ_neck_mm')->nullable();
             $table->float('circ_chest_mm')->nullable();
             $table->float('circ_waist_mm')->nullable();

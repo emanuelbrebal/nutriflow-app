@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('physical_evaluations', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('folds_id')->constrained('folds');
-            $table->foreignId('circumferences_id')->constrained('circumferences');
+            $table->foreignId('user_id')->constrained('users');
 
             $table->boolean('is_previous')->default('false');
             $table->date('evaluation_date')->nullable();
