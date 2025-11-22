@@ -14,17 +14,18 @@ return new class extends Migration
     {
         Schema::create('protocols', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('patient_id')->constrained('patients');
 
             $table->foreignId('diet_id')->constrained('diets');
 
             $table->date('start_date');
             $table->date('end_date');
 
-            $table->integer('objective')->default(ObjectivesEnum::WeightLoss); // colocar o enum no modelo
-
+            $table->integer('objective')->default(ObjectivesEnum::WeightLoss);
+            
             $table->text('message')->nullable(); 
             
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
