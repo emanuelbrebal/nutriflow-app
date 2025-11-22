@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Meals extends Model
 {
     protected $fillable = [
+        'protocol_id',
         'title',
         'description',
         'time',
@@ -20,12 +21,10 @@ class Meals extends Model
         'skipped' => 'boolean',
     ];
 
-    public function diets()
-{
-    return $this->belongsToMany(Diets::class, 'diets_meals')
-                ->using(DietMeals::class)
-                ->withTimestamps();
-}
+    public function protocol()
+    {
+        return $this->belongsTo(Protocols::class);
+    }
 
     public function foods()
     {

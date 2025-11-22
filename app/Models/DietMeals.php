@@ -3,12 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class DietMeals extends Pivot
+class DietMeals extends Model
 {
-    protected $table = 'diets_meals';
+    protected $fillable = [
+        'diet_id',
+        'title', 
+        'order', 
+    ];
 
-    public $incrementing = true;
+    public function diet()
+    {
+        return $this->belongsTo(Diets::class);
+    }
 
+    public function foods()
+    {
+        return $this->belongsToMany(Foods::class, 'diet_meal_foods')
+            ->withPivot(['quantity', 'unit']);
+    }
 }

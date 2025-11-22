@@ -13,7 +13,8 @@ class Protocols extends Model
         'start_date',
         'end_date',
         'objective',
-        'message'
+        'message',
+        'is_active'
     ];
 
     protected $casts = [
@@ -22,13 +23,14 @@ class Protocols extends Model
         'objective' => ObjectivesEnum::class,
     ];
 
-    public function user()
+    public function patient()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Patient::class);
     }
 
-    public function diet()
+    public function meals()
     {
-        return $this->belongsTo(Diets::class);
+        return $this->hasMany(Meals::class);
     }
+    
 }

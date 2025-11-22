@@ -1,57 +1,39 @@
-<script setup>
-import { computed, watch } from 'vue';
-import { usePage } from '@inertiajs/vue3';
+<script setup lang="ts">
+import { watch } from 'vue'
+import { usePage } from '@inertiajs/vue3'
+import { toast } from 'vue-sonner'
+import { Toaster } from '@/components/ui/sonner'
 
-const page = usePage();
+interface FlashData {
+  success: string | null
+  error: string | null
+}
 
-const success = computed(() => page.props.flash?.success || null);
-const error = computed(() => page.props.flash?.error || null);
+const page = usePage<any>()
 
-watch([success, error], () => {
-  if (success.value || error.value) {
-    setTimeout(() => {
-      if (success.value) {
-        page.props.flash.success = null;
-      }
-      if (error.value) {
-        page.props.flash.error = null;
-      }
-    }, 5000);
-  }
-});
+watch(
+  () => page.props.flash as FlashData,
+  (flash) => {
+    if (!flash) return
+
+    if (flash.success) {
+      toast.success(flash.success, {
+        class: '!bg-green-600 !text-white !border-green-600 font-bold',
+        duration: 4000
+      })
+    }
+
+    if (flash.error) {
+      toast.error(flash.error, {
+        class: '!bg-red-600 !text-white !border-red-600 font-bold',
+        duration: 4000
+      })
+    }
+  },
+  { deep: true, immediate: true }
+)
 </script>
 
 <template>
-  <div class="fixed top-6 right-6 z-50 w-full max-w-sm">
-
-    <Transition name="fade">
-      <div v-if="success" class="p-4 mb-4 rounded-lg shadow-xl bg-green-600 text-white">
-        {{ success }}
-      </div>
-    </Transition>
-
-    <Transition name="fade">
-      <div v-if="error" class="p-4 rounded-lg shadow-xl bg-red-600 text-white">
-        {{ error }}
-      </div>
-    </Transition>
-
-  </div>
+  <Toaster position="top-right" closeButton/>
 </template>
-
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.fade-enter-to,
-.fade-leave-from {
-  opacity: 1;
-}
-</style>

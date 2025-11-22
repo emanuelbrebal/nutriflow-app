@@ -7,19 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Diets extends Model
 {
     protected $fillable = [
+        'nutritionist_id',
         'title',
         'description'
     ];
 
-    public function meals()
+    public function nutritionist()
     {
-        return $this->belongsToMany(Meals::class, 'diets_meals')
-            ->using(DietMeals::class)
-            ->withTimestamps();
+        return $this->belongsTo(Nutritionist::class);
     }
 
-    public function protocols()
+    public function templateMeals()
     {
-        return $this->hasMany(Protocols::class);
+        return $this->hasMany(DietMeals::class);
     }
 }

@@ -3,10 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use App\Enums\AccountTypeEnum;
 use App\Enums\PlanLevelEnum;
 use App\Enums\StatusEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute; 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -44,7 +44,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
      * @return array<string, string>
      */
@@ -77,17 +77,37 @@ class User extends Authenticatable
         return $code;
     }
 
+    protected $appends = [
+        'plan_label', 
+        'account_type_label' 
+    ];
+
+    protected function planLabel(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->plan_level?->getLabel(),
+        );
+    }
+
+    protected function accountTypeLabel(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->account_type?->getLabel(),
+        );
+    }
+
+
     public function nutritionist()
     {
         return $this->hasOne(Nutritionist::class);
     }
 
-    public function isNutricionist() {
-        return $this->accountType === AccountTypeEnum::Nutritionist; 
+    public function isNutritionist() {
+        return $this->account_type === AccountTypeEnum::Nutritionist; 
     }
 
     public function patient()
     {
-        return $this->hasOne(Nutritionist::class);
+        return $this->hasOne(Patient::class);
     }
 }

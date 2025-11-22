@@ -2,19 +2,25 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NutritionistController;
-use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\AuthNutritionistMiddleware;
+use App\Http\Middleware\AuthPatientMiddleware;
+use App\Http\Middleware\AuthUserMiddleware;
+use App\Http\Middleware\IntermediatePlanMiddleware;
+use App\Http\Middleware\PremiumPlanMiddleware;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // retorna landing page
-Route::get('/nutriflow-welcome', function () {
+Route::get('/', function () {
     return Inertia::render('Index');
 })->name('ladingpage.redirect');
 
 Route::get('/upgrade-plan', function () {
     return Inertia::render('Upgrade/UpgradePlan');
 })->name('plans.upgrade');
+
 Route::get('/upgrade-plan/payment', function () {
     return Inertia::render('Upgrade/PaymentView');
 })->name('payment.redirect');
@@ -30,15 +36,25 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('/logout-post', 'logout')->name('logout');
 });
 
+Route::controller(UserController::class)->prefix('user')->group(function () {});
 
-Route::controller(UserController::class)->prefix('user')->group(function () {
-    Route::get('/dashboard', 'redirectMyDashboard')->name('user.my-dashboard');
-    Route::get('/onboarding-form', 'redirectOnboardingForm')->name('user.onboarding-form');
-    Route::get('/my-profile', 'redirectMyProfile')->name('user.my-profile');
-});
+Route::middleware(AuthUserMiddleware::class)->group(function () {
+    Route::middleware(AuthPatientMiddleware::class)->group(function () {
+        Route::controller(PatientController::class)->prefix('patient')->group(function () {
+            Route::get('/dashboard', 'redirectMyDashboard')->name('user.my-dashboard');
+            Route::get('/onboarding-form', 'redirectOnboardingForm')->name('user.onboarding-form');
+            Route::get('/my-profile', 'redirectMyProfile')->name('user.my-profile');
+            Route::get('/my-meals', 'redirectMyMeals')->name('user.my-meals');
+            Route::get('/progresses', 'redirectProgresses')->name('user.progresses')->middleware(IntermediatePlanMiddleware::class);
+            Route::get('/analysis', 'redirectAnalysis')->name('user.analysis')->middleware(PremiumPlanMiddleware::class);
+        });
+    });
 
-Route::controller(NutritionistController::class)->prefix('nutritionist')->group(function () {
-    Route::get('/dashboard', 'redirectMyPatients')->name('nutritionist.my-patients');
-    Route::get('/set-new-evaluation', 'redirectSetNewEvaluation')->name('nutritionist.redirect.set_new_evaluation');
-    Route::get('/set-new-dietary-protocol', 'redirectSetNewDietaryProtocol')->name('nutritionist.redirect.diet_builder');
+    Route::middleware(AuthNutritionistMiddleware::class)->group(function () {
+        Route::controller(NutritionistController::class)->prefix('nutritionist')->group(function () {
+            Route::get('/dashboard', 'redirectMyPatients')->name('nutritionist.my-patients');
+            Route::get('/set-new-evaluation', 'redirectSetNewEvaluation')->name('nutritionist.redirect.set_new_evaluation');
+            Route::get('/set-new-dietary-protocol', 'redirectSetNewDietaryProtocol')->name('nutritionist.redirect.diet_builder');
+        });
+    });
 });
