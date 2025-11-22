@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Patient extends Model
 {
@@ -20,7 +23,7 @@ class Patient extends Model
     ];
 
     protected $casts = [
-        'data_nascimento' => 'date',
+        'birth_date' => 'date',
     ];
 
     public function user()
@@ -31,5 +34,15 @@ class Patient extends Model
     public function nutritionist()
     {
         return $this->belongsTo(Nutritionist::class, 'linked_nutritionist');
+    }
+
+    public function protocols()
+    {
+        return $this->hasMany(Protocols::class);
+    }
+
+    public function activeProtocol()
+    {
+        return $this->hasOne(Protocols::class)->where('is_active', true);
     }
 }
