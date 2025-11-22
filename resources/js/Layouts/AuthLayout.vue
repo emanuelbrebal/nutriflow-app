@@ -7,11 +7,13 @@ const form = useForm();
 </script>
 
 <template>
-  <FlashMessages />
   <div class="min-h-screen w-screen flex items-center justify-center bg-gray-100">
+    <div class="absolute top-5 right-5 z-50 max-w-sm w-full">
+      <FlashMessages />
+    </div>
+    
     <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 rounded-xl shadow-lg overflow-hidden bg-white">
-
-      <div class="hidden md:flex items-center justify-center bg-gradient-to-br from-green-500 to-emerald-600 relative">
+      <div class="hidden md:flex items-center justify-center bg-linear-to-br from-green-500 to-emerald-600 relative">
 
         <div class="relative z-10 text-white p-6 max-w-md">
           <h1 class="text-3xl font-bold">Nutriflow</h1>
