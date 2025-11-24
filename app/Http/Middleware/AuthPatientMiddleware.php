@@ -17,7 +17,8 @@ class AuthPatientMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::guard('web')->user()->account_type == AccountTypeEnum::Patient) {
+        $user = Auth::guard('web')->user(); 
+        if ($user && $user->account_type == AccountTypeEnum::Patient) {
             return $next($request);
         }
 

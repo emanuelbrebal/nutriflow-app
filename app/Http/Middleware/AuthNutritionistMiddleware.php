@@ -17,7 +17,9 @@ class AuthNutritionistMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::guard('web')->user()->account_type == AccountTypeEnum::Nutritionist) {
+        $user = Auth::guard('web')->user();
+
+        if ($user && $user->account_type == AccountTypeEnum::Nutritionist) {
             return $next($request);
         }
 
