@@ -35,10 +35,6 @@ const handleLink = () => {
     });
 };
 
-const handleComplete = (e: string[]) => {
-    // Opcional: Pode focar no botão ou auto-enviar quando completar
-    // console.log(e.join(''))
-}
 </script>
 
 <template>
