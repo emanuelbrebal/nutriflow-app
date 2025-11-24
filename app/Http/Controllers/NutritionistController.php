@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class NutritionistController extends Controller
@@ -18,7 +19,14 @@ class NutritionistController extends Controller
     public function redirectMyPatients()
     {
         // passar os pacientes com seus relacionamentos
-        return Inertia::render('Nutritionist/MyPatients');
+        $user = Auth::user();
+        $user->load(['nutritionist.patients.user']);
+
+        $patients = $user->nutritionist?->patients ?? [];
+        return Inertia::render('Nutritionist/MyPatients', [
+            'user' => $user,
+            'patients' => $patients
+        ]);
     }
     public function redirectSetNewEvaluation()
     {
