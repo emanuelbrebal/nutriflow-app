@@ -27,14 +27,17 @@ export interface User {
 
     user_code: string;
     mobile_number: string | null;
-    
     account_type: number;
     plan_level: number;
     account_status: number;
 
+    birth_date: string; 
+    height: number;
+    weight: number;
+    biological_sex: string;
+    main_objective?: string;
+    activity_level?: string;
+
     plan_label: string;
     account_type_label: string;
-
-    nutritionist?: unknown;
-    patient?: unknown;
 }
