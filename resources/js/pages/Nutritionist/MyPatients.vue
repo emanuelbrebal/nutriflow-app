@@ -1,169 +1,87 @@
-<script setup>
+<script setup lang="ts">
 import ProfessionalLayout from '@/Layouts/ProfessionalLayout.vue'
+import { Head } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+// UI Components
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input'
+import { Search, Info } from "lucide-vue-next"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { Input } from '@/components/ui/input'
-import { Search } from "lucide-vue-next"
-import { Head, Link } from '@inertiajs/vue3'
-import { route } from 'ziggy-js'
+
 import Planner from '@/Layouts/Components/Nutritionist/MyPatients/Planner.vue';
+import PatientsListTable from './MyPatientsComponents/PatientsListTable.vue';
+
 
 defineOptions({
   layout: ProfessionalLayout
 });
+
+defineProps<{
+    patients: any[]
+}>();
+
 </script>
 
 <template>
 
-  <Head title="Nutriflow - Seu Dashboard">
+  <Head title="Nutriflow - Meus Pacientes">
     <link rel="preconnect" href="https://rsms.me/" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
   </Head>
 
-  <section class="flex min-h-full w-full gap-6 mb-4">
-    <article id="my-patients" class="w-3/5 p-8 shadow bg-white rounded border">
-      <div>
-        <h2 class="text-xl font-bold mb-4">Bem-vindo ao painel de seus pacientes!</h2>
+  <section class="flex flex-col lg:flex-row min-h-full w-full gap-6 mb-4 p-4 md:p-0">
+    
+    <article id="my-patients" class="w-full lg:w-3/5 p-6 md:p-8 shadow-sm bg-white rounded-xl border border-gray-100">
+      
+      <div class="mb-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-2">Bem-vindo ao painel de seus pacientes!</h2>
+        <div class="flex items-center gap-2 text-sm text-gray-600">
+            <span class="font-medium">Seus pacientes vinculados</span>
+            <TooltipProvider>
+            <Tooltip>
+                <TooltipTrigger>
+                    <Info class="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent>
+                <p class="text-center max-w-xs text-xs">
+                    Gerencie seus pacientes nesta aba.
+                    <br>
+                    Acompanhe protocolos, avaliações e status.
+                </p>
+                </TooltipContent>
+            </Tooltip>
+            </TooltipProvider>
+        </div>
       </div>
-      <span class="font-bold">
-        Seus pacientes
-        <TooltipProvider>
-          <Tooltip>
-            <Badge variant="outline" class="m-1 rounded-full">
-              <TooltipTrigger class="font-bold">i</TooltipTrigger>
-            </Badge>
-            <TooltipContent>
-              <p class="text-center">
-                Gerencie seus pacientes nesta aba.
-                <br>
-                A consulta será feita por status e prazo do protocolo (quanto mais próximo da data de vencimento).
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </span>
 
-      <Button variant="outline" class="text-white bg-emerald-400 w-full mb-4 mt-4" as-child>
-        <!-- <Link :href="route('patients.create')"> Adicionar pacientes</Link> -->
-      </Button>
-      <div class="flex w-full items-center gap-1.5 mb-4">
-        <Input id="patient-search" type="text" placeholder="Buscar paciente" class="pl-10" />
-        <span class="absolute flex items-center justify-center px-2">
-          <Search class="size-6 text-muted-foreground " />
-        </span>
+      <div class="flex flex-col gap-4 mb-6">
+          <Button variant="outline" class="text-white bg-emerald-500 hover:bg-emerald-600 w-full border-0 shadow-sm" as-child>
+            <span>Convidar Novos Pacientes</span>
+          </Button>
+
+          <div class="relative w-full">
+            <Input id="patient-search" type="text" placeholder="Buscar paciente por nome, código ou email..." class="pl-10 bg-gray-50 border-gray-200 focus:bg-white transition-colors" />
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                <Search class="w-4 h-4 text-gray-400" />
+            </span>
+          </div>
       </div>
-      Colocar um input de busca dos pacientes
-      Colocar filtros de busca
-      <Table>
-        <TableCaption>
-          Uma lista com todos os seus pacientes ativos.
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead class="w-[100px]"></TableHead>
-            <TableHead class="w-[100px]">Usuario</TableHead>
-            <TableHead>E-mail</TableHead>
-            <TableHead>Protocolo Atual</TableHead>
-            <TableHead>Prazo do protocolo</TableHead>
-            <TableHead>Avaliação Atual</TableHead>
-            <TableHead>Prazo Avaliação</TableHead>
-            <TableHead>Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell class="font-medium">
-              <Avatar class="justify-self-center">
-                <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </TableCell>
-            <TableCell class="font-medium">
-              USER001
-            </TableCell>
-            <TableCell class="font-medium">
-              user_name.surname@email.com
-            </TableCell>
-            <TableCell class="font-medium">
-              <Button variant="default" class="bg-orange-400 text-white">
-                <Link :href="route('nutritionist.redirect.diet_builder')">
-                  Visualizar
-                </Link>
-              </Button>
-            </TableCell>
-            <TableCell class="font-medium">
-              dd/mm/yyyy
-            </TableCell>
-            <TableCell class="font-medium">
-              <Button as-child variant="default" class="bg-blue-400 text-white">
-                <Link :href="route('nutritionist.redirect.set_new_evaluation')">
-                  Visualizar
-                </Link>
-              </Button>
-            </TableCell>
-            <TableCell class="font-medium">
-              dd/mm/yyyy
-            </TableCell>
-            <TableCell class="font-medium">
-              <Badge variant="outline" class="bg-emerald-300">Ativo</Badge>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell class="font-medium">
-              <Avatar class="justify-self-center">
-                <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </TableCell>
-            <TableCell class="font-medium">
-              USER002
-            </TableCell>
-            <TableCell class="font-medium">
-              user_name.surname2@email.com
-            </TableCell>
-            <TableCell class="font-medium">
-              <Button disabled variant="default" class="bg-orange-400 text-white">
-                Visualizar
-              </Button>
-            </TableCell>
-            <TableCell class="font-medium">
-              dd/mm/yyyy
-            </TableCell>
-            <TableCell class="font-medium">
-              <Button disabled variant="default" class="bg-blue-400 text-white">
-                Visualizar
-              </Button>
-            </TableCell>
-            <TableCell class="font-medium">
-              dd/mm/yyyy
-            </TableCell>
-            <TableCell class="font-medium">
-              <Badge variant="destructive">Inativo</Badge>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+
+     
+      <PatientsListTable :patients="patients" />
+
     </article>
 
-    <aside id="planner" class="w-2/5 p-8 shadow bg-white rounded">
+    <aside id="planner" class="w-full lg:w-2/5 p-6 md:p-8 shadow-sm bg-white rounded-xl border border-gray-100 h-fit">
       <Planner/>
     </aside>
+
   </section>
 </template>

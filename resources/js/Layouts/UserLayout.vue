@@ -1,38 +1,28 @@
 <script setup lang="ts">
-import { User } from '@/types';
 import AppLayout from './AppLayout.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import { Route } from 'ziggy-js';
 
 const page = usePage();
-const user = computed(() => page.props.auth.user as User);
-const patient = computed(() => user.value?.patient);
-const activeProtocol = computed(() => patient.value?.active_protocol);
-const meals = computed(() => activeProtocol.value?.meals || []);
+
+const user = computed(() => page.props.auth.user);
 
 </script>
 
 <template>
   <AppLayout>
     <template #user-greeting>
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2" v-if="user">
         <span>
           Olá, {{ user.name }}
         </span>
-       
         <span class="text-gray-400">
           {{ user.account_type_label }}
           •
           {{ user.plan_label }}
         </span>
 
-        <span>
-          Código: <span class="font-bold"> {{ user.user_code }}</span>
-        </span>
-
       </div>
-
     </template>
 
     <template #navigation-links>

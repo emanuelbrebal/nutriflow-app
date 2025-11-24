@@ -1,14 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import UserLayout from '@/Layouts/UserLayout.vue'
+import { Head } from '@inertiajs/vue3'
+import { defineProps } from 'vue';
 
-import { Head, Link } from '@inertiajs/vue3'
+import PatientOnboardingForm from '@/Layouts/Components/MyProfile/PatientOnboardingForm.vue';
 
 defineOptions({
     layout: UserLayout
 });
 
-import PatientOnboardingForm from '@/Layouts/Components/MyProfile/PatientOnboardingForm.vue';
-import NutritionistInfoCard from '@/Layouts/Components/MyProfile/NutritionistInfoCard.vue';
+const props = defineProps({
+    user: Object
+});
 
 </script>
 
@@ -22,12 +25,9 @@ import NutritionistInfoCard from '@/Layouts/Components/MyProfile/NutritionistInf
     <section id="main" class="w-full flex justify-center py-12">
         <article id="left-page" class="max-w-2xl w-full flex flex-col gap-8">
             <h1 class="text-3xl font-bold text-center">
-                Quase lá, {nome do paciente}!
+                Quase lá, {{ props.user?.name }}!
             </h1>
-            <NutritionistInfoCard />
-            <PatientOnboardingForm />
+            <PatientOnboardingForm v-if="!user?.patient" />
         </article>
-
-
     </section>
 </template>

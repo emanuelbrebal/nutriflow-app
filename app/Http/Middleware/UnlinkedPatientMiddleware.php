@@ -2,13 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\AccountTypeEnum;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthNutritionistMiddleware
+class UnlinkedPatientMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,11 +17,9 @@ class AuthNutritionistMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::guard('web')->user();
-
-        if ($user && $user->account_type == AccountTypeEnum::Nutritionist) {
-            return $next($request);
+        if(!isset($user->patient->linked_nutritionist)){
+            return redirect()->route('user.link_nutritionist')->with(['error', 'Você precisa se vincular a um nutricionista primeiro!']);
         }
-
-        return redirect()->back()->with(['error' => 'Acesso negado!']);
+        return $next($request);
     }
 }

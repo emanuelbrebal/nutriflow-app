@@ -2,13 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\AccountTypeEnum;
+use App\Enums\StatusEnum;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthNutritionistMiddleware
+class OnboardingMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,11 +18,9 @@ class AuthNutritionistMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::guard('web')->user();
-
-        if ($user && $user->account_type == AccountTypeEnum::Nutritionist) {
-            return $next($request);
+        if ($user->account_status == StatusEnum::Incomplete) {
+            return redirect()->route('user.onboarding-form')->with(['error', 'Por favor, complete seu cadastro primeiro!']);
         }
-
-        return redirect()->back()->with(['error' => 'Acesso negado!']);
+        return $next($request);
     }
 }

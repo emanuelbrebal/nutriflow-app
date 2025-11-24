@@ -8,7 +8,9 @@ use App\Http\Middleware\AuthNutritionistMiddleware;
 use App\Http\Middleware\AuthPatientMiddleware;
 use App\Http\Middleware\AuthUserMiddleware;
 use App\Http\Middleware\IntermediatePlanMiddleware;
+use App\Http\Middleware\OnboardingMiddleware;
 use App\Http\Middleware\PremiumPlanMiddleware;
+use App\Http\Middleware\UnlinkedPatientMiddleware;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -41,12 +43,25 @@ Route::controller(UserController::class)->prefix('user')->group(function () {});
 Route::middleware(AuthUserMiddleware::class)->group(function () {
     Route::middleware(AuthPatientMiddleware::class)->group(function () {
         Route::controller(PatientController::class)->prefix('patient')->group(function () {
-            Route::get('/dashboard', 'redirectMyDashboard')->name('user.my-dashboard');
+
             Route::get('/onboarding-form', 'redirectOnboardingForm')->name('user.onboarding-form');
-            Route::get('/my-profile', 'redirectMyProfile')->name('user.my-profile');
-            Route::get('/my-meals', 'redirectMyMeals')->name('user.my-meals');
-            Route::get('/progresses', 'redirectProgresses')->name('user.progresses')->middleware(IntermediatePlanMiddleware::class);
-            Route::get('/analysis', 'redirectAnalysis')->name('user.analysis')->middleware(PremiumPlanMiddleware::class);
+            Route::post('/onboarding-form', 'fillOnboardingForm')->name('user.onboarding-form.post');
+            Route::post('/link-nutritionist', 'linkNutritionist')->name('user.link-nutritionist.post');
+            Route::post('/unlink-nutritionist', 'unlinkNutritionist')->name('user.unlink-nutritionist.post');
+
+            Route::middleware(OnboardingMiddleware::class)->group(function () {
+                Route::get('/dashboard', 'redirectMyDashboard')->name('user.my-dashboard');
+
+                Route::get('/my-profile', 'redirectMyProfile')->name('user.my-profile');
+                Route::post('/user/update', 'updateMyProfile')->name('user.update.post');
+
+                Route::post('/user/delete', 'deleteMyAccount')->name('user.delete.post');
+
+
+                Route::get('/my-meals', 'redirectMyMeals')->name('user.my-meals')->middleware(UnlinkedPatientMiddleware::class);
+                Route::get('/progresses', 'redirectProgresses')->name('user.progresses')->middleware(IntermediatePlanMiddleware::class);
+                Route::get('/analysis', 'redirectAnalysis')->name('user.analysis')->middleware(PremiumPlanMiddleware::class);
+            });
         });
     });
 

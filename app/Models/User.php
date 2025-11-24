@@ -6,7 +6,7 @@ namespace App\Models;
 use App\Enums\AccountTypeEnum;
 use App\Enums\PlanLevelEnum;
 use App\Enums\StatusEnum;
-use Illuminate\Database\Eloquent\Casts\Attribute; 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -31,6 +31,7 @@ class User extends Authenticatable
         'plan_level',
         'account_status',
         'mobile_number',
+        'profile_picture_path'
     ];
 
     /**
@@ -58,6 +59,11 @@ class User extends Authenticatable
             'account_status' => StatusEnum::class,
         ];
     }
+    
+    protected $appends = [
+        'plan_label',
+        'account_type_label'
+    ];
 
     protected static function booted()
     {
@@ -77,37 +83,28 @@ class User extends Authenticatable
         return $code;
     }
 
-    protected $appends = [
-        'plan_label', 
-        'account_type_label' 
-    ];
-
-    protected function planLabel(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->plan_level?->getLabel(),
-        );
-    }
-
-    protected function accountTypeLabel(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->account_type?->getLabel(),
-        );
-    }
-
-
     public function nutritionist()
     {
         return $this->hasOne(Nutritionist::class);
     }
 
-    public function isNutritionist() {
-        return $this->account_type === AccountTypeEnum::Nutritionist; 
+    public function isNutritionist()
+    {
+        return $this->account_type === AccountTypeEnum::Nutritionist;
     }
 
     public function patient()
     {
         return $this->hasOne(Patient::class);
+    }
+
+    public function getPlanLabelAttribute()
+    {
+        return $this->plan_level->getLabel();
+    }
+
+    public function getAccountTypeLabelAttribute()
+    {
+        return $this->account_type->getLabel();
     }
 }

@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useColorMode } from '@vueuse/core';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import FlashMessages from '@/Layouts/Components/FlashMessages.vue'; 
+import FlashMessages from '@/Layouts/Components/FlashMessages.vue';
+import { computed } from 'vue';
 
-const mode = useColorMode();
+
+const page = usePage();
+const user = computed(() => page.props.auth.user);
 </script>
 
 <template>
   <div class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md">
-     <FlashMessages />
+    <FlashMessages />
   </div>
 
   <div class="flex">
@@ -21,9 +23,12 @@ const mode = useColorMode();
         <h1 class="text-4xl font-bold mb-6 text-[#5AD598] justify-self-center">Nutriflow</h1>
         <div id="user-info" class="flex flex-col justify-center m-4">
           <div id="user-avatar" class="mb-4">
-            <Avatar class="w-18 h-18 justify-self-center">
-              <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
-              <AvatarFallback>CN</AvatarFallback>
+            <Avatar class="w-18 h-18 justify-self-center ">
+              <AvatarImage :src="user.profile_picture_path ? `/storage/${user.profile_picture_path}` : ''"
+                :alt="user.name" class="object-cover border-[#5AD598] border-2"/>
+              <AvatarFallback>
+                {{ user.name.substring(0, 2).toUpperCase() }}
+              </AvatarFallback>
             </Avatar>
           </div>
           <div id="hello-user">
@@ -49,22 +54,24 @@ const mode = useColorMode();
           <span id="upgrade-trust">
             Desbloqueie análises, recursos avançados e IA.
           </span>
-          <Link :href="route('plans.upgrade')" class="bg-[#49D18D] text-white p-1 rounded hover:bg-[#3db376] transition">
-            Fazer Upgrade
+          <Link :href="route('plans.upgrade')"
+            class="bg-[#49D18D] text-white p-1 rounded hover:bg-[#3db376] transition">
+          Fazer Upgrade
           </Link>
         </div>
 
         <div id="profile" class="m-4">
-          <Link :href="route('user.onboarding-form')" class="block hover:text-gray-500 transition">Meu Perfil</Link>
-          <Link :href="route('logout')" method="post" as="button" type="button" class="block hover:text-gray-500 transition mt-2">
-            Encerrar sessão
+          <Link :href="route('user.my-profile')" class="block hover:text-gray-500 transition">Meu Perfil</Link>
+          <Link :href="route('logout')" method="post" as="button" type="button"
+            class="block hover:text-gray-500 transition mt-2">
+          Encerrar sessão
           </Link>
         </div>
       </section>
     </aside>
 
     <div class="flex-1 flex flex-col bg-[#e2e2e2] min-h-screen h-fit">
-      
+
       <main class="flex-1 p-6">
         <slot />
       </main>
