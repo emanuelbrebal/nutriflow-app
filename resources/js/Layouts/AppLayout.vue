@@ -23,9 +23,9 @@ const user = computed(() => page.props.auth.user);
         <h1 class="text-4xl font-bold mb-6 text-[#5AD598] justify-self-center">Nutriflow</h1>
         <div id="user-info" class="flex flex-col justify-center m-4">
           <div id="user-avatar" class="mb-4">
-            <Avatar class="w-18 h-18 justify-self-center ">
+            <Avatar class="w-24 h-24 justify-self-center ">
               <AvatarImage :src="user.profile_picture_path ? `/storage/${user.profile_picture_path}` : ''"
-                :alt="user.name" class="object-cover border-[#5AD598] border-2"/>
+                :alt="user.name" class="object-cover border-[#1dd177] border-3 rounded-full"/>
               <AvatarFallback>
                 {{ user.name.substring(0, 2).toUpperCase() }}
               </AvatarFallback>
