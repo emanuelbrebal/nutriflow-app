@@ -68,7 +68,7 @@ const user = computed(() => page.props.auth.user);
       </section>
     </aside>
 
-    <div class="flex-1 flex flex-col bg-[#e2e2e2] min-h-screen h-fit">
+    <div class="flex-1 flex flex-col bg-[#e1e1e1] min-h-screen h-fit">
 
       <main class="flex-1 p-6">
         <slot />
