@@ -10,6 +10,7 @@ import { route } from 'ziggy-js';
 
 import LinkPatientsCard from '@/Layouts/Components/MyProfile/LinkedNutritionist/LinkPatientsCard.vue';
 import ProfessionalLayout from '@/Layouts/ProfessionalLayout.vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
     user: User
@@ -31,6 +32,7 @@ interface PageEnums {
 }
 
 const page = usePage<PageEnums>();
+
 const options = page.props.enums || { specialty: [] };
 
 const form = useForm({
@@ -38,8 +40,8 @@ const form = useForm({
     email: props.user.email,
     mobile_number: props.user.mobile_number || '',
     profile_picture: null as File | null,
-    
-    crn: props.user.nutritionist?.crn || '', 
+
+    crn: props.user.nutritionist?.crn || '',
     specialty: props.user.nutritionist?.specialty ? String(props.user.nutritionist.specialty) : '',
 });
 
@@ -51,7 +53,7 @@ const handleFileChange = (e: Event) => {
 };
 
 const submitProfileUpdate = () => {
-    form.post(route('nutritionist.onboarding-form.post'), {
+    form.post(route('nutritionist.update.post'), {
         preserveScroll: true,
         forceFormData: true,
     });
@@ -79,12 +81,11 @@ const submitProfileUpdate = () => {
                         </CardHeader>
 
                         <CardContent class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
                             <div class="md:col-span-2 flex flex-col gap-2">
                                 <Label for="profile_picture">Foto de Perfil</Label>
                                 <input id="profile_picture" name="profile_picture" type="file" accept="image/*"
                                     @change="handleFileChange"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer file:text-green-700 file:bg-green-50 file:rounded-md file:px-2 file:py-1 file:mr-4 hover:file:bg-green-100"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer file:text-green-700 file:bg-green-50 file:rounded-md file:px-2 file:py-1 file:mr-4 hover:file:bg-green-100"
                                     :class="{ 'border-red-500': form.errors.profile_picture }" />
                                 <p v-if="form.errors.profile_picture" class="text-xs text-red-500">
                                     {{ form.errors.profile_picture }}
@@ -125,22 +126,22 @@ const submitProfileUpdate = () => {
                             <div class="flex flex-col gap-2">
                                 <Label for="specialty">Especialidade</Label>
                                 <Select v-model="form.specialty">
-                                    <SelectTrigger id="specialty"
-                                        :class="{ 'border-red-500': form.errors.specialty }">
+                                    <SelectTrigger id="specialty" :class="{ 'border-red-500': form.errors.specialty }">
                                         <SelectValue placeholder="Selecione sua especialidade" />
                                     </SelectTrigger>
+
                                     <SelectContent>
-                                        <SelectItem v-for="option in options.specialty" :key="String(option.value)"
+                                        <SelectItem v-for="option in options" :key="option.value"
                                             :value="String(option.value)">
                                             {{ option.label }}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
+
                                 <p v-if="form.errors.specialty" class="text-xs text-red-500 mt-1">
                                     {{ form.errors.specialty }}
                                 </p>
                             </div>
-
                         </CardContent>
                         <CardFooter class="flex justify-end border-t bg-gray-50/50 px-6 py-4">
                             <Button type="submit" :disabled="form.processing"

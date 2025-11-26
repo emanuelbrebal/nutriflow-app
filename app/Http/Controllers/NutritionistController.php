@@ -18,9 +18,6 @@ class NutritionistController extends Controller
         protected NutritionistService $nutritionistService
     ) {}
 
-    /**
-     * Exibe o formulário de Onboarding.
-     */
     public function redirectOnboardingForm()
     {
         return Inertia::render('Nutritionist/OnboardingForm', [
@@ -110,5 +107,27 @@ class NutritionistController extends Controller
     public function redirectSetNewDietaryProtocol()
     {
         return Inertia::render('Nutritionist/DietBuilder');
+    }
+
+    public function updateMyProfile(Request $request)
+    {
+        $userData = $request->only([
+            'name', 
+            'mobile_number'
+        ]);
+
+        $nutritionistData = $request->only([
+            'crn',
+            'specialty',
+        ]);
+
+        $this->nutritionistService->updateProfile(
+            Auth::user(),
+            $userData,
+            $nutritionistData,
+            $request->file('profile_picture')
+        );
+
+        return back()->with('success', 'Perfil atualizado com sucesso!');
     }
 }

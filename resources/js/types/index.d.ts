@@ -40,4 +40,7 @@ export interface User {
 
     plan_label: string;
     account_type_label: string;
+
+    patient: Patient;
+    nutritionist: Nutritionist;
 }
