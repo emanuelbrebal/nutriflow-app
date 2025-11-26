@@ -73,7 +73,7 @@ Route::middleware(AuthUserMiddleware::class)->group(function () {
             Route::post('/onboarding-form', 'fillOnboardingForm')->name('nutritionist.onboarding-form.post');
 
             Route::middleware(OnboardingMiddleware::class)->group(function () {
-                Route::post('/user/update', 'updateMyProfile')->name('user.update.post');
+                Route::post('/user/update', 'updateMyProfile')->name('nutritionist.update.post');
                 Route::get('/my-patients', 'redirectMyPatients')->name('nutritionist.my-patients');
                 Route::post('/link-patient', 'linkPatient')->name('nutritionist.link-patient');
                 Route::post('/unlink-patient/{patientUserId}', 'unlinkPatient')->name('nutritionist.unlink-patient');
