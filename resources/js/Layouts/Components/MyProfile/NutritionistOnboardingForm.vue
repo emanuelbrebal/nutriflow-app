@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/field';
 import { route } from 'ziggy-js';
 
-// Interfaces de Tipagem
 interface SelectOption {
   value: string | number;
   label: string;
@@ -28,13 +27,12 @@ interface SelectOption {
 
 interface PageEnums {
   enums: {
-    specialties: SelectOption[]; // O array gerado pelo NutritionistSpecialtyEnum::options()
+    specialties: SelectOption[]; 
   }
 }
 
 const page = usePage<PageEnums>();
 
-// Garante que options.specialties exista mesmo que a prop falhe
 const options = page.props.enums || { specialties: [] };
 
 const form = useForm({
@@ -54,7 +52,7 @@ const handleFileChange = (e: Event) => {
 const submit = () => {
   form.post(route('nutritionist.onboarding-form.post'), {
     preserveScroll: true,
-    forceFormData: true, // Essencial para envio de arquivos (multipart/form-data)
+    forceFormData: true, 
   });
 };
 </script>
@@ -84,7 +82,7 @@ const submit = () => {
               <div class="flex items-center gap-4">
                 <input id="profile_picture" name="profile_picture" type="file" accept="image/*"
                   @change="handleFileChange"
-                  class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer file:text-green-700 file:bg-green-50 file:rounded-md file:px-2 file:py-1 file:mr-4 hover:file:bg-green-100"
+                  class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0  file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer file:text-green-700 file:bg-green-50 file:rounded-md file:px-2 file:py-1 file:mr-4 hover:file:bg-green-100"
                   :class="{ 'border-red-500': form.errors.profile_picture }" />
               </div>
               <FieldDescription>
