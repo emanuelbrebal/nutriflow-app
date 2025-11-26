@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import UnlinkNutritionist from './modals/UnlinkNutritionist.vue';
+import UnlinkNutritionist from '../../modals/UnlinkNutritionist.vue';
 
 const props = defineProps({
   nutritionist: {
@@ -29,7 +29,7 @@ const props = defineProps({
       </h3>
 
       <p class="text-sm text-gray-600 mt-1">
-        Especialidade: <span class="font-medium text-gray-900">{{ nutritionist.specialty }}</span>
+        Especialidade: <span class="font-medium text-gray-900">{{ nutritionist.specialty_label }}</span>
       </p>
 
       <p class="text-sm text-gray-500">
