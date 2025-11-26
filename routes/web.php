@@ -38,18 +38,17 @@ Route::middleware(AuthUserMiddleware::class)->group(function () {
 
     Route::controller(UserController::class)->group(function () {
         Route::get('/my-profile', 'redirectMyProfile')->name('user.my-profile');
-        Route::post('/user/update', 'update')->name('user.update.post');
     });
 
     Route::middleware(AuthPatientMiddleware::class)->prefix('patient')->group(function () {
         Route::controller(PatientController::class)->group(function () {
-            
             Route::get('/onboarding-form', 'redirectOnboardingForm')->name('user.onboarding-form');
             Route::post('/onboarding-form', 'fillOnboardingForm')->name('user.onboarding-form.post');
             Route::post('/link-nutritionist', 'linkNutritionist')->name('user.link-nutritionist.post');
             Route::post('/unlink-nutritionist', 'unlinkNutritionist')->name('user.unlink-nutritionist.post');
 
             Route::middleware(OnboardingMiddleware::class)->group(function () {
+                Route::post('/user/update', 'updateMyProfile')->name('user.update.post');
                 Route::get('/dashboard', 'redirectMyDashboard')->name('user.my-dashboard');
                 Route::post('/user/delete', 'deleteMyAccount')->name('user.delete.post');
 
@@ -70,11 +69,11 @@ Route::middleware(AuthUserMiddleware::class)->group(function () {
 
     Route::middleware(AuthNutritionistMiddleware::class)->prefix('nutritionist')->group(function () {
         Route::controller(NutritionistController::class)->group(function () {
-            
             Route::get('/onboarding-form', 'redirectOnboardingForm')->name('nutritionist.onboarding-form');
             Route::post('/onboarding-form', 'fillOnboardingForm')->name('nutritionist.onboarding-form.post');
 
             Route::middleware(OnboardingMiddleware::class)->group(function () {
+                Route::post('/user/update', 'updateMyProfile')->name('user.update.post');
                 Route::get('/my-patients', 'redirectMyPatients')->name('nutritionist.my-patients');
                 Route::post('/link-patient', 'linkPatient')->name('nutritionist.link-patient');
                 Route::post('/unlink-patient/{patientUserId}', 'unlinkPatient')->name('nutritionist.unlink-patient');

@@ -40,7 +40,7 @@ class NutritionistService
         if (!$patientUser) {
             return [
                 'success' => false,
-                'message' => 'Paciente não encontrado com este e-mail ou código.'
+                'message' => 'Paciente não encontrado com este código.'
             ];
         }
 

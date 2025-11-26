@@ -22,7 +22,7 @@ const nutriCode = ref<string[]>([])
 const handleLink = () => {
     const codeString = nutriCode.value.join('');
 
-    router.post(route('user.link-nutritionist.post'), {
+    router.post(route('nutritionist.link-patient'), {
         code: codeString
     }, {
         preserveScroll: true,
@@ -92,7 +92,7 @@ const handleLink = () => {
 
                     <div class="w-full flex justify-center gap-1">
                         <PinInput id="pin-input" v-model="nutriCode" placeholder="○" class="flex gap-2 items-center"
-                            @complete="handleComplete">
+                            @complete="handleLink">
                             <PinInputGroup>
                                 <PinInputSlot v-for="(id, index) in 6" :key="id" :index="index"
                                     class="flex gap-3 w-12 h-14 text-xl border-gray-300 focus:border-green-500 rounded-md bg-gray-50" />

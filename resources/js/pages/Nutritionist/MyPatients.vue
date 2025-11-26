@@ -3,8 +3,6 @@ import ProfessionalLayout from '@/Layouts/ProfessionalLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
-// UI Components
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input'
 import { Search, Info } from "lucide-vue-next"
@@ -17,7 +15,7 @@ import {
 
 import Planner from '@/Layouts/Components/Nutritionist/MyPatients/Planner.vue';
 import PatientsListTable from './MyPatientsComponents/PatientsListTable.vue';
-
+import InviteNewPatients from '@/Layouts/Components/modals/InviteNewPatients.vue';
 
 defineOptions({
   layout: ProfessionalLayout
@@ -62,9 +60,9 @@ defineProps<{
       </div>
 
       <div class="flex flex-col gap-4 mb-6">
-          <Button variant="outline" class="text-white bg-emerald-500 hover:bg-emerald-600 w-full border-0 shadow-sm" as-child>
-            <span>Convidar Novos Pacientes</span>
-          </Button>
+        <div class="relative w-full">
+          <InviteNewPatients />
+        </div>
 
           <div class="relative w-full">
             <Input id="patient-search" type="text" placeholder="Buscar paciente por nome, código ou email..." class="pl-10 bg-gray-50 border-gray-200 focus:bg-white transition-colors" />

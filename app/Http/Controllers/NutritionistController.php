@@ -31,9 +31,6 @@ class NutritionistController extends Controller
         ]);
     }
 
-    /**
-     * Processa o envio do formulário de Onboarding.
-     */
     public function fillOnboardingForm(NutritionistOnboardingRequest $request)
     {
         $userData = [
@@ -76,7 +73,7 @@ class NutritionistController extends Controller
 
         $result = $this->nutritionistService->linkPatient(
             Auth::user(), 
-            $request->input('patient_identifier')
+            $request->input('code')
         );
 
         if (!$result['success']) {

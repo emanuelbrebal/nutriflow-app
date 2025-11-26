@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import UnlinkNutritionist from './modals/UnlinkNutritionist.vue';
+import UnlinkNutritionist from '../../modals/UnlinkNutritionist.vue';
 
 const props = defineProps({
   nutritionist: {
@@ -15,7 +15,7 @@ const props = defineProps({
     <div>
       <Avatar class="w-18 h-18 justify-self-center ">
         <AvatarImage :src="props.nutritionist.user.profile_picture_path ? `/storage/${props.nutritionist.user.profile_picture_path}` : ''" :alt="nutritionist.user.name"
-          class="object-cover border-[#5AD598] border-2" />
+          class="object-cover border-[#1dd177] border-3 rounded-full" />
         <AvatarFallback>
           {{ nutritionist.user.name.substring(0, 2).toUpperCase() }}
         </AvatarFallback>
@@ -29,7 +29,7 @@ const props = defineProps({
       </h3>
 
       <p class="text-sm text-gray-600 mt-1">
-        Especialidade: <span class="font-medium text-gray-900">{{ nutritionist.specialty }}</span>
+        Especialidade: <span class="font-medium text-gray-900">{{ nutritionist.specialty_label }}</span>
       </p>
 
       <p class="text-sm text-gray-500">

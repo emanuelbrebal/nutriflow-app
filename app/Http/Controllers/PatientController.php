@@ -50,25 +50,6 @@ class PatientController extends Controller
         ];
     }
 
-    public function redirectMyProfile()
-    {
-        $user = Auth::user();
-
-        if ($user->account_type == AccountTypeEnum::Nutritionist) {
-            $user->load(['nutritionist']);
-            return Inertia::render('Nutritionist/MyProfile', [
-                'user' => $user,
-                'enums' => NutritionistSpecialtyEnum::options()
-            ]);
-        }
-        $user->load(['patient.nutritionist.user']);
-
-        return Inertia::render('User/MyProfile', [
-            'user' => $user,
-            'enums' => $this->getEnums()
-        ]);
-    }
-
     public function linkNutritionist(CodeLinkRequest $request)
     {
         $result = $this->patientService->linkNutritionist(Auth::user(), $request->code);
