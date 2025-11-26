@@ -2,40 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AccountTypeEnum;
+use App\Enums\ActivityLevelEnum;
+use App\Enums\BiologicalSexEnum;
+use App\Enums\NutritionistSpecialtyEnum;
+use App\Enums\ObjectivesEnum;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+     public function redirectMyProfile()
     {
-        //
-    }
+        $user = Auth::user();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        if ($user->account_type == AccountTypeEnum::Nutritionist) {
+            $user->load(['nutritionist']);
+            return Inertia::render('Nutritionist/MyProfile', [
+                'user' => $user,
+                'enums' => NutritionistSpecialtyEnum::options()
+            ]);
+        }
+        
+        $user->load(['patient.nutritionist.user']);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+        return Inertia::render('User/MyProfile', [
+            'user' => $user,
+            'enums' => $this->getEnums()
+        ]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    
+    private function getEnums(): array
     {
-        //
+        return [
+            'objectives' => ObjectivesEnum::options(),
+            'activity_levels' => ActivityLevelEnum::options(),
+            'biological_sex' => BiologicalSexEnum::options(),
+        ];
     }
 }
