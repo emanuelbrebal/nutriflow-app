@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PatientService
 {
-    /**
-     * Tenta vincular um paciente a um nutricionista via código.
-     * Retorna um array com o status e mensagem para o controller decidir a resposta.
-     */
     public function linkNutritionist(User $patientUser, string $code): array
     {
         $nutritionistUser = User::where('user_code', $code)
@@ -48,9 +44,6 @@ class PatientService
         ];
     }
 
-    /**
-     * Remove o vínculo do nutricionista.
-     */
     public function unlinkNutritionist(User $user): void
     {
         if ($user->patient) {
@@ -58,9 +51,7 @@ class PatientService
         }
     }
 
-    /**
-     * Centraliza a lógica de atualização de perfil (tanto onboarding quanto update).
-     */
+    
     public function updateProfile(User $user, array $userData, array $patientData, ?UploadedFile $photo = null, bool $activateAccount = false): void
     {
         if ($photo) {
@@ -79,9 +70,6 @@ class PatientService
         );
     }
 
-    /**
-     * Desativa a conta do usuário.
-     */
     public function deactivateAccount(User $user): bool
     {
         if ($user->account_status == StatusEnum::Inactive) {
@@ -93,9 +81,6 @@ class PatientService
         return true;
     }
 
-    /**
-     * Helper privado para gerenciar upload e exclusão de foto antiga.
-     */
     private function handleProfilePictureUpload(User $user, UploadedFile $photo, array &$userData): void
     {
         if ($user->profile_picture_path && Storage::disk('public')->exists($user->profile_picture_path)) {
