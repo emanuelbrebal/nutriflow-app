@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AccountTypeEnum;
 use App\Enums\ActivityLevelEnum;
 use App\Enums\BiologicalSexEnum;
+use App\Enums\NutritionistSpecialtyEnum;
 use App\Enums\ObjectivesEnum;
 use App\Http\Controllers\LoginController;
 use App\Http\Requests\CodeLinkRequest;
@@ -39,10 +41,27 @@ class PatientController extends Controller
         ]);
     }
 
+    private function getEnums(): array
+    {
+        return [
+            'objectives' => ObjectivesEnum::options(),
+            'activity_levels' => ActivityLevelEnum::options(),
+            'biological_sex' => BiologicalSexEnum::options(),
+        ];
+    }
+
     public function redirectMyProfile()
     {
         $user = Auth::user();
-        $user->load(['patient.nutritionist.user']); 
+
+        if ($user->account_type == AccountTypeEnum::Nutritionist) {
+            $user->load(['nutritionist']);
+            return Inertia::render('Nutritionist/MyProfile', [
+                'user' => $user,
+                'enums' => NutritionistSpecialtyEnum::options()
+            ]);
+        }
+        $user->load(['patient.nutritionist.user']);
 
         return Inertia::render('User/MyProfile', [
             'user' => $user,
@@ -64,9 +83,10 @@ class PatientController extends Controller
         return back()->with('success', "Você foi vinculado ao Dr(a). {$result['nutritionist_name']} com sucesso!");
     }
 
-    public function unlinkNutritionist(Request $request)
+    public function unlinkNutritionist()
     {
-        $this->patientService->unlinkNutritionist(Auth::user());
+        $user = Auth::user();
+        $this->patientService->unlinkNutritionist($user);
 
         return back()->with('success', "Você não está mais vinculado ao nutricionista. Para continuar usando o sistema, por favor vincule-se a outro nutricionista!");
     }
@@ -74,10 +94,14 @@ class PatientController extends Controller
     public function fillOnboardingForm(OnboardingFillRequest $request)
     {
         $userData = ['mobile_number' => $request->mobile_number];
-        
+
         $patientData = $request->only([
-            'birth_date', 'biological_sex', 'height', 'weight', 
-            'main_objective', 'activity_level'
+            'birth_date',
+            'biological_sex',
+            'height',
+            'weight',
+            'main_objective',
+            'activity_level'
         ]);
 
         $this->patientService->updateProfile(
@@ -85,7 +109,7 @@ class PatientController extends Controller
             $userData,
             $patientData,
             $request->file('profile_picture'),
-            true 
+            true
         );
 
         return redirect()->route('user.my-profile')->with('success', 'Perfil atualizado com sucesso!');
@@ -99,8 +123,12 @@ class PatientController extends Controller
         ];
 
         $patientData = $request->only([
-            'birth_date', 'biological_sex', 'height', 'weight', 
-            'main_objective', 'activity_level'
+            'birth_date',
+            'biological_sex',
+            'height',
+            'weight',
+            'main_objective',
+            'activity_level'
         ]);
 
         $this->patientService->updateProfile(
@@ -124,14 +152,5 @@ class PatientController extends Controller
         $this->loginController->logout($request);
 
         return back()->with(['error', 'Essa conta já está desativada.']);
-    }
-
-    private function getEnums(): array
-    {
-        return [
-            'objectives' => ObjectivesEnum::options(),
-            'activity_levels' => ActivityLevelEnum::options(),
-            'biological_sex' => BiologicalSexEnum::options(),
-        ];
     }
 }

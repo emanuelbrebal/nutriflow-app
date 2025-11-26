@@ -2,71 +2,116 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\NutritionistSpecialtyEnum;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CodeLinkRequest;
+use App\Http\Requests\NutritionistOnboardingRequest;
+use App\Services\NutritionistService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class NutritionistController extends Controller
 {
+    public function __construct(
+        protected NutritionistService $nutritionistService
+    ) {}
+
     /**
-     * Display a listing of the resource.
+     * Exibe o formulário de Onboarding.
      */
-    public function index()
+    public function redirectOnboardingForm()
     {
-        //
+        return Inertia::render('Nutritionist/OnboardingForm', [
+            'user' => Auth::user(),
+            'enums' => [
+                'specialties' => NutritionistSpecialtyEnum::options()
+            ]
+        ]);
+    }
+
+    /**
+     * Processa o envio do formulário de Onboarding.
+     */
+    public function fillOnboardingForm(NutritionistOnboardingRequest $request)
+    {
+        $userData = [
+            'mobile_number' => $request->mobile_number
+        ];
+
+        $nutritionistData = [
+            'crn' => $request->crn,
+            'specialty' => $request->specialty
+        ];
+
+        $this->nutritionistService->updateProfile(
+            user: Auth::user(),
+            userData: $userData,
+            nutritionistData: $nutritionistData,
+            photo: $request->file('profile_picture'),
+            activateAccount: true 
+        );
+
+        return redirect()->route('nutritionist.my-patients')
+        ->with(['success', 'Perfil profissional configurado com sucesso!']);
     }
 
     public function redirectMyPatients()
     {
-        // passar os pacientes com seus relacionamentos
         $user = Auth::user();
+        
         $user->load(['nutritionist.patients.user']);
 
         $patients = $user->nutritionist?->patients ?? [];
+
         return Inertia::render('Nutritionist/MyPatients', [
             'user' => $user,
             'patients' => $patients
         ]);
     }
+
+    public function linkPatient(CodeLinkRequest $request)
+    {
+
+        $result = $this->nutritionistService->linkPatient(
+            Auth::user(), 
+            $request->input('patient_identifier')
+        );
+
+        if (!$result['success']) {
+            return back()->withErrors(['patient_identifier' => $result['message']]);
+        }
+
+        return back()->with([
+            'success' => true,
+            'message' => "Paciente {$result['patient_name']} vinculado com sucesso!"
+        ]);
+    }
+
+
+    public function unlinkPatient(int $patientUserId)
+    {
+        $result = $this->nutritionistService->unlinkPatient(Auth::user(), $patientUserId);
+
+        if (!$result['success']) {
+            return back()->withErrors(['error' => $result['message']]);
+        }
+
+        return back()->with([
+            'success' => true,
+            'message' => 'Paciente removido da sua lista.'
+        ]);
+    }
+
+
     public function redirectSetNewEvaluation()
     {
-        // passar os pacientes com seus relacionamentos
         return Inertia::render('Nutritionist/EvaluationsForm');
     }
+
     public function redirectSetNewDietaryProtocol()
     {
-        // passar os pacientes com seus relacionamentos
         return Inertia::render('Nutritionist/DietBuilder');
-    }
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
