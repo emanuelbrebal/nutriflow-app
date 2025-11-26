@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\AccountTypeEnum;
 use App\Enums\StatusEnum;
 use Closure;
 use Illuminate\Http\Request;
@@ -18,9 +19,20 @@ class OnboardingMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::guard('web')->user();
+
         if ($user->account_status == StatusEnum::Incomplete) {
-            return redirect()->route('user.onboarding-form')->with(['error', 'Por favor, complete seu cadastro primeiro!']);
+            $routeName = '';
+            if ($user->account_type == AccountTypeEnum::Patient) {
+                $routeName = 'user.onboarding-form';
+            }
+
+            if ($user->account_type == AccountTypeEnum::Nutritionist) {
+                $routeName = 'nutritionist.onboarding-form';
+            }
+
+            return redirect()->route($routeName)->with(['error', 'Por favor, complete seu cadastro primeiro!']);
         }
+
         return $next($request);
     }
 }
