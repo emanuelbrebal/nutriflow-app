@@ -33,9 +33,7 @@ const user = computed(() => page.props.auth.user);
           </div>
           <div id="hello-user">
             <span>
-              <slot name="user-greeting">
-                Olá, Usuário
-              </slot>
+              <slot name="user-greeting" />
             </span>
           </div>
         </div>

@@ -10,7 +10,17 @@ const user = computed(() => page.props.auth.user)
 <template>
   <AppLayout>
     <template #user-greeting>
-      Olá, {{ user.name }}
+      <div class="flex flex-col gap-2" v-if="user">
+        <span>
+          Olá, {{ user.name }}
+        </span>
+        <span class="text-gray-400">
+          {{ user.account_type_label }}
+          •
+          {{ user.plan_label }}
+        </span>
+
+      </div>
     </template>
 
     <template #navigation-links>
