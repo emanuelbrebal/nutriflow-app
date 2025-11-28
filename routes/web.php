@@ -38,6 +38,8 @@ Route::middleware(AuthUserMiddleware::class)->group(function () {
 
     Route::controller(UserController::class)->group(function () {
         Route::get('/my-profile', 'redirectMyProfile')->name('user.my-profile');
+        Route::post('/changePassword', 'changePassword')->name('user.change-password');
+        Route::post('/delete-account', 'deleteAccount')->name('user.delete');
     });
 
     Route::middleware(AuthPatientMiddleware::class)->prefix('patient')->group(function () {
