@@ -7,10 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CodeLinkRequest;
 use App\Http\Requests\NutritionistOnboardingRequest;
 use App\Services\NutritionistService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
+use Illuminate\Http\RedirectResponse;
 
 class NutritionistController extends Controller
 {
@@ -18,7 +21,8 @@ class NutritionistController extends Controller
         protected NutritionistService $nutritionistService
     ) {}
 
-    public function redirectOnboardingForm()
+
+    public function redirectOnboardingForm(): InertiaResponse
     {
         return Inertia::render('Nutritionist/OnboardingForm', [
             'user' => Auth::user(),
@@ -28,33 +32,43 @@ class NutritionistController extends Controller
         ]);
     }
 
-    public function fillOnboardingForm(NutritionistOnboardingRequest $request)
+    public function fillOnboardingForm(NutritionistOnboardingRequest $request): RedirectResponse
     {
-        $userData = [
-            'mobile_number' => $request->mobile_number
-        ];
+        try {
+            DB::beginTransaction();
 
-        $nutritionistData = [
-            'crn' => $request->crn,
-            'specialty' => $request->specialty
-        ];
+            $userData = [
+                'mobile_number' => $request->mobile_number
+            ];
 
-        $this->nutritionistService->updateProfile(
-            user: Auth::user(),
-            userData: $userData,
-            nutritionistData: $nutritionistData,
-            photo: $request->file('profile_picture'),
-            activateAccount: true 
-        );
+            $nutritionistData = [
+                'crn' => $request->crn,
+                'specialty' => $request->specialty
+            ];
 
-        return redirect()->route('nutritionist.my-patients')
-        ->with(['success', 'Perfil profissional configurado com sucesso!']);
+            $this->nutritionistService->updateProfile(
+                user: Auth::user(),
+                userData: $userData,
+                nutritionistData: $nutritionistData,
+                photo: $request->file('profile_picture'),
+                activateAccount: true
+            );
+
+            DB::commit();
+
+            return redirect()->route('nutritionist.my-patients')
+                ->with('success', 'Perfil profissional configurado com sucesso!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocorreu um erro ao configurar o perfil. Por favor, tente novamente.');
+        }
     }
 
-    public function redirectMyPatients()
+
+    public function redirectMyPatients(): InertiaResponse
     {
         $user = Auth::user();
-        
+
         $user->load(['nutritionist.patients.user']);
 
         $patients = $user->nutritionist?->patients ?? [];
@@ -65,69 +79,89 @@ class NutritionistController extends Controller
         ]);
     }
 
-    public function linkPatient(CodeLinkRequest $request)
+
+    public function linkPatient(CodeLinkRequest $request): RedirectResponse
     {
+        try {
+            DB::beginTransaction();
+            $result = $this->nutritionistService->linkPatient(
+                Auth::user(),
+                $request->input('code')
+            );
 
-        $result = $this->nutritionistService->linkPatient(
-            Auth::user(), 
-            $request->input('code')
-        );
+            $patientName = $result['patient_name'] ?? 'Nome Desconhecido';
 
-        if (!$result['success']) {
-            return back()->withErrors(['patient_identifier' => $result['message']]);
+            DB::commit();
+
+            return back()->with('success', "Paciente: {$patientName}, vinculado com sucesso!");
+        } catch (Throwable $e) {
+            DB::rollBack();
+            $errorMessage = 'Ocorreu um erro inesperado ao tentar vincular o paciente. Tente novamente. Detalhes: ' . $e->getMessage();
+
+            return back()->with('error', $errorMessage);
         }
-
-        return back()->with([
-            'success' => true,
-            'message' => "Paciente {$result['patient_name']} vinculado com sucesso!"
-        ]);
     }
 
 
-    public function unlinkPatient(int $patientUserId)
+
+    public function unlinkPatient(int $patientUserId): RedirectResponse
     {
-        $result = $this->nutritionistService->unlinkPatient(Auth::user(), $patientUserId);
-
-        if (!$result['success']) {
-            return back()->withErrors(['error' => $result['message']]);
+        try {
+            DB::beginTransaction();
+            $this->nutritionistService->unlinkPatient(Auth::user(), $patientUserId);
+            DB::commit();
+            return back()->with('success', 'Paciente removido da sua lista com sucesso.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Ocorreu um erro inesperado ao remover o paciente. Tente novamente.');
         }
-
-        return back()->with([
-            'success' => true,
-            'message' => 'Paciente removido da sua lista.'
-        ]);
     }
 
 
-    public function redirectSetNewEvaluation()
+
+    public function redirectSetNewEvaluation(): InertiaResponse
     {
         return Inertia::render('Nutritionist/EvaluationsForm');
     }
 
-    public function redirectSetNewDietaryProtocol()
+
+    public function redirectSetNewDietaryProtocol(): InertiaResponse
     {
         return Inertia::render('Nutritionist/DietBuilder');
     }
 
-    public function updateMyProfile(Request $request)
+
+    public function updateMyProfile(Request $request): RedirectResponse
     {
-        $userData = $request->only([
-            'name', 
-            'mobile_number'
-        ]);
+        // Se o Request não for um FormRequest, a validação deve ser feita aqui ou no Service.
+        // Assumimos que o Service lida com a validação ou que um FormRequest foi omitido.
+        try {
+            DB::beginTransaction();
 
-        $nutritionistData = $request->only([
-            'crn',
-            'specialty',
-        ]);
+            $userData = $request->only([
+                'name',
+                'mobile_number'
+            ]);
 
-        $this->nutritionistService->updateProfile(
-            Auth::user(),
-            $userData,
-            $nutritionistData,
-            $request->file('profile_picture')
-        );
+            $nutritionistData = $request->only([
+                'crn',
+                'specialty',
+            ]);
 
-        return back()->with('success', 'Perfil atualizado com sucesso!');
+            $this->nutritionistService->updateProfile(
+                Auth::user(),
+                $userData,
+                $nutritionistData,
+                $request->file('profile_picture')
+            );
+
+            DB::commit();
+
+            return back()->with('success', 'Perfil atualizado com sucesso!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            // Logar o erro $e
+            return back()->with('error', 'Ocorreu um erro ao atualizar o perfil. Tente novamente.');
+        }
     }
 }

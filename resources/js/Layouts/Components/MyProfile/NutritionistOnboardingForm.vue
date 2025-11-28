@@ -42,6 +42,41 @@ const form = useForm({
   specialty: null as string | number | null,
 });
 
+const handlePhoneMask = (e: Event) => {
+  let value = e.target.value;
+
+  value = value.replace(/\D/g, "");
+
+  value = value.substring(0, 11);
+
+  value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
+  
+  value = value.replace(/(\d)(\d{4})$/, "$1-$2");
+
+  form.mobile_number = value;
+};
+
+const handleCrnMask = (e: Event) => {
+  let value = e.target.value;
+
+  let numbers = value.replace(/\D/g, "");
+
+  if (numbers.length === 0) {
+    form.crn = "";
+    return;
+  }
+
+  let region = numbers.substring(0, 1);
+  let registration = numbers.substring(1);
+
+
+  if (registration.length > 0) {
+    form.crn = `CRN-${region} ${registration}`;
+  } else {
+    form.crn = `CRN-${region}`;
+  }
+};
+
 const handleFileChange = (e: Event) => {
   const target = e.target as HTMLInputElement;
   if (target.files && target.files.length > 0) {
@@ -96,7 +131,7 @@ const submit = () => {
             <Field>
               <FieldLabel for="mobile_number">Celular Profissional / WhatsApp</FieldLabel>
               <Input id="mobile_number" type="tel" placeholder="(00) 00000-0000" v-model="form.mobile_number"
-                :class="{ 'border-red-500': form.errors.mobile_number }" />
+                :class="{ 'border-red-500': form.errors.mobile_number }" @input="handlePhoneMask" maxlength="15"/>
               <p v-if="form.errors.mobile_number" class="text-xs text-red-500 mt-1">
                 {{ form.errors.mobile_number }}
               </p>
@@ -117,8 +152,8 @@ const submit = () => {
 
             <Field>
               <FieldLabel for="crn">Número do CRN</FieldLabel>
-              <Input id="crn" type="text" placeholder="Ex: 12345/UF" v-model="form.crn"
-                :class="{ 'border-red-500': form.errors.crn }" />
+              <Input id="crn" type="text" placeholder="Ex: CRN-3 12345" v-model="form.crn"
+                :class="{ 'border-red-500': form.errors.crn }" @input="handleCrnMask"/>
               <FieldDescription>
                 Seu registro no Conselho Regional de Nutricionistas.
               </FieldDescription>

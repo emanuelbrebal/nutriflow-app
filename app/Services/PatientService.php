@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\AccountTypeEnum;
 use App\Enums\StatusEnum;
+use App\Http\Requests\PatientOnboardingUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -19,20 +20,12 @@ class PatientService
         if (!$nutritionistUser || $nutritionistUser->account_status == StatusEnum::Inactive) {
             return [
                 'success' => false,
-                'type' => 'validation', 
+                'type' => 'validation',
                 'message' => 'Este código não pertence a um nutricionista ativo.'
             ];
         }
 
         $patient = $patientUser->patient;
-
-        if (!$patient) {
-            return [
-                'success' => false,
-                'type' => 'flash', 
-                'message' => 'Complete seu perfil de paciente antes de vincular.'
-            ];
-        }
 
         $patient->update([
             'linked_nutritionist' => $nutritionistUser->nutritionist->id
@@ -51,23 +44,45 @@ class PatientService
         }
     }
 
-    
-    public function updateProfile(User $user, array $userData, array $patientData, ?UploadedFile $photo = null, bool $activateAccount = false): void
+    public function updateProfile(User $user, PatientOnboardingUpdateRequest $request): void
     {
-        if ($photo) {
-            $this->handleProfilePictureUpload($user, $photo, $userData);
-        }
+        $userData = $request->only(['name', 'mobile_number']);
+        $userData['account_status'] = StatusEnum::Active->value;
 
-        if ($activateAccount) {
-            $userData['account_status'] = StatusEnum::Active;
+        if ($request->hasFile('profile_picture')) {
+            $photo = $request->file('profile_picture');
+            $newPath = $this->handleProfilePictureUpload($user, $photo);
+            $userData['profile_picture_path'] = $newPath;
         }
 
         $user->update($userData);
+
+        $patientData = $request->only([
+            'birth_date',
+            'biological_sex',
+            'height',
+            'weight',
+            'main_objective',
+            'activity_level'
+        ]);
 
         $user->patient()->updateOrCreate(
             ['user_id' => $user->id],
             $patientData
         );
+    }
+
+
+    private function handleProfilePictureUpload(User $user, UploadedFile $photo): string
+    {
+        $oldPath = $user->profile_picture_path;
+        if ($oldPath && Storage::disk('public')->exists($oldPath)) {
+            Storage::disk('public')->delete($oldPath);
+        }
+
+        $newPath = $photo->store('avatars', 'public');
+
+        return $newPath;
     }
 
     public function deactivateAccount(User $user): bool
@@ -77,17 +92,7 @@ class PatientService
         }
 
         $user->update(['account_status' => StatusEnum::Inactive]);
-        
+
         return true;
-    }
-
-    private function handleProfilePictureUpload(User $user, UploadedFile $photo, array &$userData): void
-    {
-        if ($user->profile_picture_path && Storage::disk('public')->exists($user->profile_picture_path)) {
-            Storage::disk('public')->delete($user->profile_picture_path);
-        }
-
-        $path = $photo->store('avatars', 'public');
-        $userData['profile_picture_path'] = $path;
     }
 }

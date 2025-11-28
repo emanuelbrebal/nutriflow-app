@@ -11,6 +11,8 @@ import { route } from 'ziggy-js';
 
 import LinkedNutritionist from '@/Layouts/Components/MyProfile/LinkedNutritionist/LinkedNutritionist.vue';
 import LinkNutritionistCard from '@/Layouts/Components/MyProfile/LinkedNutritionist/LinkNutritionistCard.vue';
+import ChangePassword from '@/Layouts/Components/modals/ChangePassword.vue';
+import DeleteAccount from '@/Layouts/Components/modals/DeleteAccount.vue';
 
 const props = defineProps<{
     user: User
@@ -212,26 +214,12 @@ const submitProfileUpdate = () => {
             </main>
 
             <aside class="lg:col-span-1 flex flex-col gap-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Segurança da Conta</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p class="text-sm text-gray-600 mb-4">Deseja alterar sua senha de acesso?</p>
-                        <Button variant="outline" class="w-full">Alterar Senha</Button>
-                    </CardContent>
-                </Card>
-
-                <Card class="border-red-100 bg-red-50">
-                    <CardHeader>
-                        <CardTitle class="text-red-600">Zona de Perigo</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p class="text-sm text-red-800 mb-4">Excluir sua conta é uma ação permanente.</p>
-                        <Button variant="destructive" class="w-full bg-red-600 hover:bg-red-700">Excluir minha
-                            conta</Button>
-                    </CardContent>
-                </Card>
+                <div class="mb-6">
+                    <ChangePassword />
+                </div>
+                <div class="mb-6">
+                    <DeleteAccount />
+                </div>
             </aside>
         </div>
     </div>

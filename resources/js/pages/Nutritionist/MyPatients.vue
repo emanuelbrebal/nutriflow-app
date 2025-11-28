@@ -13,7 +13,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 
-import Planner from '@/Layouts/Components/Nutritionist/MyPatients/Planner.vue';
+// import Planner from '@/Layouts/Components/Nutritionist/MyPatients/Planner.vue';
 import PatientsListTable from './MyPatientsComponents/PatientsListTable.vue';
 import InviteNewPatients from '@/Layouts/Components/modals/InviteNewPatients.vue';
 
@@ -36,7 +36,7 @@ defineProps<{
 
   <section class="flex flex-col lg:flex-row min-h-full w-full gap-6 mb-4 p-4 md:p-0">
     
-    <article id="my-patients" class="w-full lg:w-3/5 p-6 md:p-8 shadow-sm bg-white rounded-xl border border-gray-100">
+    <article id="my-patients" class="justify-center w-[90%] p-6 md:p-8 shadow-sm bg-white rounded-xl border border-gray-100">
       
       <div class="mb-6">
         <h2 class="text-xl font-bold text-gray-900 mb-2">Bem-vindo ao painel de seus pacientes!</h2>
@@ -77,9 +77,9 @@ defineProps<{
 
     </article>
 
-    <aside id="planner" class="w-full lg:w-2/5 p-6 md:p-8 shadow-sm bg-white rounded-xl border border-gray-100 h-fit">
+    <!-- <aside id="planner" class="w-full lg:w-2/5 p-6 md:p-8 shadow-sm bg-white rounded-xl border border-gray-100 h-fit">
       <Planner/>
-    </aside>
+    </aside> -->
 
   </section>
 </template>
