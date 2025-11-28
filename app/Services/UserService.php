@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    public function changePassword($password)
+    public function changePassword($request)
     {
+        $passwordString = $request->input('password');
         $user = Auth::guard('web')->user();
 
-        if (!Hash::check($password, $user->password)) {
+        if (!Hash::check($passwordString, $user->password)) {
             $user->update([
-                'password' => Hash::make($password)
+                'password' => Hash::make($passwordString)
             ]);
             return true;
         }

@@ -51,9 +51,8 @@ class UserController extends Controller
     {
         try {
             DB::beginTransaction();
-            $password = $request->only('password');
 
-            $changed = $this->userService->changePassword($password);
+            $changed = $this->userService->changePassword($request);
             DB::commit();
             if ($changed) {
                 return redirect()->back()->with(['success' => 'Senha alterada com suceso!']);
