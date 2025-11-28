@@ -51,6 +51,8 @@ class OnboardingFillRequest extends FormRequest
 
             'weight.min' => 'O peso mínimo permitido é 20kg.',
             'weight.max' => 'O peso máximo permitido é 500kg.',
+
+            'mobile_number' => 'O número de celular não pode exceder 20 caracteres'
         ];
     }
 }
