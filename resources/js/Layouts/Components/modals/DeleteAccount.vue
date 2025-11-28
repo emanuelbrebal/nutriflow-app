@@ -26,17 +26,8 @@ const isLoading = ref(false);
 const handleDeleteAccount = () => {
     isLoading.value = true;
     
-    router.delete(route('user.delete'), {
+    router.post(route('user.delete'), {
         preserveScroll: true,
-        onSuccess: () => {
-            isLoading.value = false;
-        },
-        onError: () => {
-            isLoading.value = false;
-        },
-        onFinish: () => {
-            isLoading.value = false;
-        }
     });
 };
 </script>
