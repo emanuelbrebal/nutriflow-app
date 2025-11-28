@@ -20,7 +20,7 @@ class UserController extends Controller
     public function __construct(private UserService $userService, private LoginController $loginController) {}
     public function redirectMyProfile()
     {
-        $user = Auth::user();
+        $user = $this->userService->getAuthUser();
 
         if ($user->account_type == AccountTypeEnum::Nutritionist) {
             $user->load(['nutritionist']);
@@ -51,7 +51,6 @@ class UserController extends Controller
     {
         try {
             DB::beginTransaction();
-
             $changed = $this->userService->changePassword($request);
             DB::commit();
             if ($changed) {

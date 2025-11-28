@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
+    public function getAuthUser()
+    {
+        return Auth::guard('web')->user();
+    }
+
     public function changePassword($request)
     {
         $passwordString = $request->input('password');
