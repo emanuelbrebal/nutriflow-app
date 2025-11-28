@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Enums\AccountTypeEnum;
+use App\Enums\StatusEnum;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,11 +18,14 @@ class AuthPatientMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::guard('web')->user(); 
-        if ($user && $user->account_type == AccountTypeEnum::Patient) {
-            return $next($request);
+        $user = Auth::guard('web')->user();
+        if ($user->account_status != StatusEnum::Inactive) {
+            if ($user && $user->account_type == AccountTypeEnum::Patient) {
+                return $next($request);
+            }
+            return redirect()->route('login.redirect')->with(['error' => 'Acesso negado!']);
         }
 
-        return redirect()->back()->withMessages(['error' => 'Acesso negado!']);
+        return redirect()->route('login.redirect')->with(['error' => 'Essa conta está desativada.']);
     }
 }
