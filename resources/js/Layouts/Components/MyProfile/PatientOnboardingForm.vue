@@ -55,6 +55,20 @@ const handleFileChange = (e: Event) => {
   }
 };
 
+const handlePhoneMask = (e: Event) => {
+  let value = e.target.value;
+
+  value = value.replace(/\D/g, "");
+
+  value = value.substring(0, 11);
+
+  value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
+
+  value = value.replace(/(\d)(\d{4})$/, "$1-$2");
+
+  form.mobile_number = value;
+};
+
 const submit = () => {
   form.post(route('user.onboarding-form.post'), {
     preserveScroll: true,
@@ -102,7 +116,7 @@ const submit = () => {
             <Field>
               <FieldLabel for="mobile_number">Número de Celular</FieldLabel>
               <Input id="mobile_number" type="tel" placeholder="(00) 00000-0000" v-model="form.mobile_number"
-                :class="{ 'border-red-500': form.errors.mobile_number }" />
+                @input="handlePhoneMask" :class="{ 'border-red-500': form.errors.mobile_number }" />
               <p v-if="form.errors.mobile_number" class="text-xs text-red-500 mt-1">
                 {{ form.errors.mobile_number }}
               </p>
