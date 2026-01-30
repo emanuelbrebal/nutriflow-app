@@ -77,13 +77,10 @@ $ cp .env.example .env
 # 4. Gere a chave da aplicação
 $ php artisan key:generate
 
-# 5. Suba o ambiente com Docker (Sail)
-$ ./vendor/bin/sail up -d
-
-# 6. Rode as migrações e Seeds (Popula o banco com dados iniciais)
+# 5. Rode as migrações e Seeds (Popula o banco com dados iniciais)
 $ ./vendor/bin/sail artisan migrate --seed
 
-# 7. Compile os assets do Front-end (em outro terminal)
+# 6. Compile os assets do Front-end (em outro terminal)
 $ npm run dev
 
 O projeto estará acessível em: http://localhost
